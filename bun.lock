@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "@meabed/agent-kit",
+      "name": "@meabed/skills",
       "devDependencies": {
         "@types/bun": "1.3.14",
         "@typescript/native-preview": "7.0.0-dev.20260628.1",

@@ -1,20 +1,17 @@
 # Adapter Matrix
 
-`agent-kit` renders one catalog recipe into the file shapes used by common coding-agent tools.
+`agent-kit` installs hand-authored files into common coding-agent workspace paths.
 
-| Target           | Output                                                                                                                | Use                                             |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| `agent-prompt`   | `generated/agent-prompts/<id>.prompt.md`                                                                              | Portable copy/paste prompt                      |
-| `claude-code`    | `.claude/skills/<id>/SKILL.md`, `.claude/commands/<id>.md` for command-like resources, plus plugin/marketplace output | Claude Code skills, slash commands, and plugins |
-| `vscode-copilot` | `.github/prompts/<id>.prompt.md`                                                                                      | VS Code/Copilot prompt files                    |
-| `gemini-cli`     | `.gemini/commands/<id>.toml` plus extension output                                                                    | Gemini CLI custom commands/extensions           |
-| `opencode`       | `.opencode/commands/<id>.md`                                                                                          | OpenCode slash commands                         |
-| `codex`          | `.agents/prompts/<id>.prompt.md`                                                                                      | Portable prompts for Codex workspaces           |
-| `cline`          | `.clinerules/<id>.md`                                                                                                 | Cline workspace rules                           |
-| `roo-code`       | `.roo/rules/<id>.md`                                                                                                  | Roo Code workspace rules                        |
-| `windsurf-devin` | `.windsurf/rules/<id>.md`                                                                                             | Windsurf/Devin workspace rules                  |
+| Target           | Installed files                                                                                            |
+| ---------------- | ---------------------------------------------------------------------------------------------------------- |
+| `claude-code`    | `.claude/commands/*.md`, `.claude/skills/*/SKILL.md`, `.claude/agents/*.md`                                |
+| `codex`          | `.agents/commands/*.md`, `.agents/skills/*/SKILL.md`, `.agents/prompts/*.prompt.md`, `.agents/agents/*.md` |
+| `vscode-copilot` | `.github/prompts/*.prompt.md`                                                                              |
+| `gemini-cli`     | `.gemini/commands/*.toml`                                                                                  |
+| `opencode`       | `.opencode/commands/*.md`                                                                                  |
+| `cline`          | `.clinerules/*.md`                                                                                         |
+| `roo-code`       | `.roo/rules/*.md`                                                                                          |
+| `windsurf-devin` | `.windsurf/rules/*.md`                                                                                     |
 
-Adapters are intentionally conservative. They render text and metadata; they do not install MCP
-servers, hooks, or commands that execute code unless a future catalog entry explicitly owns that
-behavior. Claude Code command-like resources are emitted as slash-command markdown; reusable
-operating guidance is emitted as skills with trigger descriptions.
+The root `.claude-plugin/plugin.json` also makes this repository usable as a Claude Code plugin
+directory. Use `skills plugin claude-code --out .` to copy a plugin bundle into another workspace.

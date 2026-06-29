@@ -1,46 +1,50 @@
 # Agent Kit
 
-Reusable prompts, skills, commands, and repo rules for coding agents.
+Hand-authored prompts, skills, commands, agents, and plugin files for coding agents.
 
-This repo is the distributable home for the AI resources published on
-[mo.ca/ai](https://mo.ca/ai). The site keeps its articles. This package mirrors the operational
-resource from each article into a catalog, validates it, and renders tool-specific adapters for
-Claude Code, Codex, VS Code/Copilot, Gemini CLI, OpenCode, Cline, Roo Code, and Windsurf/Devin.
+This repo is meant to be used directly. Edit the resource files by hand, review them like code, and
+install them into a project with the CLI when you want the same workflows available to an agent.
 
-## Install
+## Use With npx
 
 ```sh
-npx @meabed/agent-kit list
+npx @meabed/skills list
+npx @meabed/skills show skill remove-trivial-tests
+npx @meabed/skills install claude-code --cwd .
+npx @meabed/skills plugin claude-code --out ./plugins
 ```
 
-During local development:
+Local development:
 
 ```sh
 bun install
-bun run sync:site
-bun run generate
 bun run validate
-```
-
-## Commands
-
-```sh
-meabed-agent list
-meabed-agent show remove-trivial-tests
-meabed-agent show remove-trivial-tests --format claude-skill
-meabed-agent export remove-trivial-tests --to vscode-copilot --out .
-meabed-agent install remove-trivial-tests --to claude-code
-meabed-agent sync-site --site ../site --write
-meabed-agent generate
-meabed-agent validate
+bun test
+bun run typecheck
+bun run lint
+bun run build
 ```
 
 ## Repository Shape
 
-- `catalog/<id>/recipe.md` is the source of truth for each reusable resource.
-- `generated/` contains adapter output and can be regenerated from the catalog.
-- `registry.json` is the machine-readable index.
-- `src/` contains the CLI, parser, renderers, sync, and validation code.
-- `docs/` explains authoring, adapter behavior, and install choices.
+- `commands/*.md` - slash-command prompts.
+- `skills/<name>/SKILL.md` - reusable agent skills.
+- `prompts/*.prompt.md` - copy/paste or editor prompt files.
+- `agents/*.md` - subagent definitions.
+- `.claude-plugin/plugin.json` - makes this repo usable as a Claude Code plugin root.
+- `src/` - the installer CLI and validation code.
+- `docs/` - short docs for authoring and installation.
 
-See [docs/README.md](docs/README.md) for the full map.
+## CLI
+
+```sh
+skills list
+skills list --type skill
+skills show command audit
+skills install claude-code --cwd .
+skills install codex --cwd .
+skills plugin claude-code --out ./plugins
+skills validate
+```
+
+The installer refuses to overwrite different files unless `--force` is passed.

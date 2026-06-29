@@ -1,31 +1,30 @@
 {
-  "name": "@meabed/agent-kit",
+  "name": "@meabed/skills",
   "version": "0.1.0",
-  "description": "Prompts, skills, commands, and repo rules for coding agents.",
-  "homepage": "https://mo.ca/ai",
+  "description": "Hand-authored prompts, skills, commands, agents, and plugins for coding agents.",
+  "homepage": "https://github.com/meabed/agent-kit",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/meabed/agent-kit.git"
   },
   "bin": {
-    "meabed-agent": "./dist/cli.js"
+    "skills": "./dist/cli.js"
   },
   "files": [
-    "catalog",
+    ".claude-plugin",
+    "agents",
+    "commands",
     "dist",
     "docs",
-    "generated",
-    "registry.json",
-    "schemas",
+    "prompts",
+    "skills",
     "README.md"
   ],
   "type": "module",
   "scripts": {
     "build": "bun build ./src/cli.ts --target node --format esm --outfile dist/cli.js && chmod +x dist/cli.js",
     "dev": "bun src/cli.ts",
-    "sync:site": "bun src/cli.ts sync-site --site ../site --write",
-    "generate": "bun src/cli.ts generate && oxfmt generated registry.json",
     "validate": "bun src/cli.ts validate",
     "lint": "oxlint .",
     "fmt": "oxfmt .",

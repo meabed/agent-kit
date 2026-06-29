@@ -1,37 +1,47 @@
-# Authoring Catalog Recipes
+# Authoring
 
-Each resource lives at `catalog/<id>/recipe.md`.
+Write the actual resource file you want an agent to consume.
+
+## Commands
+
+Place slash commands in `commands/<name>.md`.
 
 ```md
 ---
-id: remove-trivial-tests
-title: Remove trivial tests before they harden
-summary: Replace shallow coverage with tests that can catch real regressions.
-type: skill
-topics: [testing, defensive-programming]
-date: 2026-06-18
-sourceArtifact: skills/remove-trivial-tests/SKILL.md
-siteUrl: https://mo.ca/ai/remove-trivial-tests
-sourcePath: src/content/ai/remove-trivial-tests.mdx
+description: Run a read-only audit and report concrete findings.
 ---
 
-Resource body goes here.
+Do NOT modify files.
+Report findings as `path:line - issue - proposed fix`.
 ```
 
-## Rules
+## Skills
 
-- `id` must be lowercase kebab-case.
-- `title` and `summary` must explain the operational value in plain language.
-- `type` should be one of `skill`, `command`, `prompt`, `workflow`, `agent`, `config`, `loop`, or
-  `resource`.
-- Body text should include concrete workflow steps, verification expectations, and real examples.
-- If the article embeds a source artifact in a fenced code block, keep that block. Renderers can use
-  it when producing a skill or command.
+Place skills in `skills/<name>/SKILL.md`.
+
+```md
+---
+name: remove-trivial-tests
+description: This skill should be used when the user asks to remove shallow tests.
+version: 0.1.0
+---
+
+# Remove trivial tests
+
+Classify tests by behavior protected. Keep, rewrite, delete, or flag each one.
+```
+
+## Prompts
+
+Place reusable prompt files in `prompts/<name>.prompt.md`.
+
+## Agents
+
+Place subagent definitions in `agents/<name>.md`.
 
 ## Review Checklist
 
-- Can an agent act on this without guessing the goal?
-- Does it say what files or risks to inspect?
-- Does it name the verification gate?
-- Does it avoid generic advice like "write clean code"?
-- Does it preserve the site link instead of moving the article out of `meabed/site`?
+- Can an agent act on the file without guessing?
+- Does it say what to inspect, change, and verify?
+- Does it name the failure mode or decision it protects?
+- Is it free of filler, vague style advice, and origin notes?

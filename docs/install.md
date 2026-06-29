@@ -1,28 +1,21 @@
-# Install And Export
+# Install
 
-Prefer explicit project-local installs.
-
-```sh
-npx @meabed/agent-kit list
-npx @meabed/agent-kit show remove-trivial-tests
-npx @meabed/agent-kit install remove-trivial-tests --to claude-code
-```
-
-The installer writes one file for one selected resource. If the destination already exists with
-different content, it refuses to overwrite unless you pass `--force`.
-
-Use `export` when preparing a repo or package:
+Use `npx` without adding the package to the target repo:
 
 ```sh
-npx @meabed/agent-kit export --to vscode-copilot --out .
-npx @meabed/agent-kit export security-review --to opencode --out .
+npx @meabed/skills list
+npx @meabed/skills install claude-code --cwd .
+npx @meabed/skills install codex --cwd .
+npx @meabed/skills plugin claude-code --out ./plugins
 ```
 
-Use `generate` inside this repo:
+The installer skips existing files with different content unless `--force` is passed.
+
+Local development:
 
 ```sh
-bun run generate
+bun install
+bun run validate
+bun test
+bun run build
 ```
-
-`generate` rebuilds `generated/` and `registry.json` from `catalog/`, then formats those generated
-artifacts so the checked-in output is deterministic.

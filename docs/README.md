@@ -2,13 +2,11 @@
 
 ## Start Here
 
-- [Authoring](authoring.md) - how to write and review `catalog/<id>/recipe.md`
-- [Adapter matrix](adapter-matrix.md) - which files each agent ecosystem consumes
-- [Install and export](install.md) - CLI examples and write-safety behavior
-- [Sync from meabed/site](sync-from-meabed-site.md) - how site posts become catalog entries
+- [Authoring](authoring.md) - how to write commands, skills, prompts, and agents by hand.
+- [Adapter matrix](adapter-matrix.md) - where the CLI installs files for each target.
+- [Install](install.md) - npx and local install examples.
 
 ## Core Model
 
-One resource lives in one canonical catalog entry. Adapters render that entry into the file shape an
-agent expects. The repo intentionally avoids separate prompt, skill, and command silos because the
-same resource often needs all three forms.
+The repo stores the actual resource files. The CLI reads the root directories and copies the files
+into the paths used by each coding-agent tool.

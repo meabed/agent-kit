@@ -1,5 +1,8 @@
+export const RESOURCE_TYPES = ['agent', 'command', 'prompt', 'skill'] as const;
+
+export type ResourceType = (typeof RESOURCE_TYPES)[number];
+
 export const TARGETS = [
-  'agent-prompt',
   'claude-code',
   'codex',
   'vscode-copilot',
@@ -12,31 +15,13 @@ export const TARGETS = [
 
 export type Target = (typeof TARGETS)[number];
 
-export const RECIPE_TYPES = [
-  'agent',
-  'command',
-  'config',
-  'loop',
-  'prompt',
-  'resource',
-  'skill',
-  'tool',
-  'workflow',
-] as const;
-
-export type RecipeType = (typeof RECIPE_TYPES)[number];
-
-export type Recipe = {
+export type Resource = {
   id: string;
+  type: ResourceType;
   title: string;
-  summary: string;
-  type: RecipeType;
-  topics: string[];
-  body: string;
-  date?: string;
-  sourceArtifact?: string;
-  siteUrl?: string;
-  sourcePath?: string;
+  description: string;
+  path: string;
+  content: string;
 };
 
 export type RenderedFile = {

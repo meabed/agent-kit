@@ -1,7 +1,7 @@
 # AGENTS.md - agent-kit
 
-Canonical repo rules for this package. Keep long product notes and adapter detail in `docs/`; link
-them here instead of duplicating them.
+Canonical repo rules for this package. Keep long ecosystem notes in `docs/`; keep actual resources
+in the root resource directories.
 
 ## Stack
 
@@ -12,10 +12,8 @@ Bun is the runtime, package manager, script runner, and test runner. Typecheck w
 ## Commands
 
 - `bun install`
-- `bun run sync:site` - import/update catalog entries from `../site/src/content/ai`
-- `bun run generate` - rebuild and format `generated/` and `registry.json`
 - `bun run validate`
-- `bun run test`
+- `bun test`
 - `bun run typecheck`
 - `bun run lint`
 - `bun run fmt`
@@ -23,37 +21,37 @@ Bun is the runtime, package manager, script runner, and test runner. Typecheck w
 
 ## Architecture
 
-- `catalog/<id>/recipe.md` is canonical authored content.
-- `generated/` is derived output. Regenerate it; do not hand-edit generated adapter files.
-- `src/frontmatter.ts` owns the small YAML subset parser used by recipes and site MDX.
-- `src/renderers.ts` owns ecosystem-specific output. Keep adapters pure and deterministic.
-- `src/cli.ts` should remain a thin command router.
-- `src/site-sync.ts` copies content from `meabed/site`; it must not modify the site repo.
+- `commands/*.md`, `skills/*/SKILL.md`, `prompts/*.prompt.md`, and `agents/*.md` are authored by
+  hand and are the source of truth.
+- `.claude-plugin/plugin.json` makes the repo itself a Claude Code plugin root.
+- `src/resources.ts` discovers local resources.
+- `src/installers.ts` maps those resources into target agent workspace paths.
+- `src/cli.ts` stays a thin command router.
+- No importer, renderer, or hidden source of truth for resource files.
 
 ## Code Style
 
 - No `any`, `as any`, broad casts, or fake compatibility shims.
 - Prefer inferred types, narrow guards, and `satisfies`.
-- Use Node-compatible `node:*` APIs in published CLI code so `npx @meabed/agent-kit` works.
-- Use Bun-specific APIs only in tests or development scripts where Node compatibility is irrelevant.
+- Use Node-compatible `node:*` APIs in published CLI code so `npx @meabed/skills` works.
 - Keep output operator-friendly: print `ok:`, `summary:`, and next steps. Never print secrets.
 - Single quotes, 2 spaces, trailing commas, 100 width; defer to `oxfmt`.
 
-## Content Rules
+## Resource Rules
 
-- Keep resource text concrete and action-oriented. It should tell an agent what to do, what to avoid,
-  how to verify, and what risk remains.
-- Do not invent proof, benchmarks, marketplace support, or tool behavior. Adapter claims should map
-  to the docs in `docs/adapter-matrix.md`.
-- Keep site articles and catalog entries in sync without removing content from the site.
+- Write resources as instructions for agents, not as articles about agents.
+- Keep examples concrete and repo-real when possible.
+- Commands should be immediately executable as slash-command instructions.
+- Skills should use `SKILL.md` frontmatter with strong trigger descriptions.
+- Do not mention external publishing surfaces or import origins in resource files.
 
 ## Verification
 
-Run the narrow check first, then the full gate before committing:
+Run the focused check first, then the full gate before committing:
 
 ```sh
 bun run validate
-bun run test
+bun test
 bun run typecheck
 bun run lint
 bun run fmt:check

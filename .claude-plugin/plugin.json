@@ -1,0 +1,11 @@
+{
+  "name": "meabed-agent-kit",
+  "displayName": "Meabed Agent Kit",
+  "description": "Hand-authored prompts, skills, commands, and agents for coding agents.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Mohamed Meabed"
+  },
+  "repository": "https://github.com/meabed/agent-kit",
+  "license": "MIT"
+}

@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-import { existsSync } from 'node:fs';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
-import { findRecipe, readCatalog } from './catalog.ts';
-import { generateAll } from './generate.ts';
-import { packageRoot } from './paths.ts';
-import { renderRecipe, isTarget } from './renderers.ts';
-import { syncSite } from './site-sync.ts';
-import { validateCatalog } from './validate.ts';
-import type { Recipe, RenderedFile, Target } from './types.ts';
+import { resolve } from 'node:path';
+import {
+  isTarget,
+  pluginBundleFiles,
+  renderInstallFiles,
+  writeRenderedFiles,
+} from './installers.ts';
+import { findResources, isResourceType, readResources } from './resources.ts';
+import { validateResources } from './validate.ts';
+import type { Resource, ResourceType, Target } from './types.ts';
 
 type CliOptions = Record<string, string | boolean>;
 
@@ -22,152 +22,110 @@ const main = async (): Promise<void> => {
       printHelp();
       return;
     case 'list':
-      await listCommand();
+      await listCommand(rest);
       return;
     case 'show':
       await showCommand(rest);
       return;
-    case 'generate':
-      await generateCommand();
+    case 'install':
+      await installCommand(rest);
       return;
-    case 'sync-site':
-      await syncSiteCommand(rest);
+    case 'plugin':
+      await pluginCommand(rest);
       return;
     case 'validate':
       await validateCommand();
-      return;
-    case 'export':
-      await exportCommand(rest);
-      return;
-    case 'install':
-      await installCommand(rest);
       return;
     default:
       fail(`unknown command "${command}"`);
   }
 };
 
-const listCommand = async (): Promise<void> => {
-  const recipes = await readCatalog();
-  for (const recipe of recipes) {
-    console.log(`${recipe.id}\t${recipe.type}\t${recipe.title}`);
+const listCommand = async (args: string[]): Promise<void> => {
+  const options = parseOptions(args);
+  const type = optionalResourceType(options);
+  const resources = (await readResources()).filter((resource) => !type || resource.type === type);
+
+  for (const resource of resources) {
+    console.log(`${resource.type}\t${resource.id}\t${resource.title}`);
   }
-  console.log(`summary: ${recipes.length} resources`);
+  console.log(`summary: ${resources.length} resources`);
 };
 
 const showCommand = async (args: string[]): Promise<void> => {
-  const id = requiredArg(args[0], 'show requires a resource id');
-  const options = parseOptions(args.slice(1));
-  const format = stringOption(options, 'format') ?? 'agent-prompt';
-  const recipe = await requiredRecipe(id);
+  const { refs } = splitArgs(args);
+  const ref = resourceRefFromArgs(refs);
 
-  if (format === 'recipe') {
-    console.log(recipe.body);
-    return;
-  }
-
-  const target = formatToTarget(format);
-  console.log(renderRecipe(recipe, target).content);
+  const { resources, missing } = await findResources([ref]);
+  if (missing.length) fail(`resource not found: ${missing.join(', ')}`);
+  console.log(requiredResource(resources[0]).content);
 };
 
-const generateCommand = async (): Promise<void> => {
-  const written = await generateAll();
-  console.log(`ok: generated adapter files`);
-  console.log(`summary: wrote ${written.length} files plus registry.json`);
+const installCommand = async (args: string[]): Promise<void> => {
+  const target = requiredTarget(args[0]);
+  const { refs, options } = splitArgs(args.slice(1));
+  const cwd = resolve(process.cwd(), stringOption(options, 'cwd') ?? '.');
+  const force = booleanOption(options, 'force');
+  const type = optionalResourceType(options);
+  const { resources, missing } = await findResources(refs);
+  if (missing.length) fail(`resource not found: ${missing.join(', ')}`);
+
+  const selected = resources.filter((resource) => !type || resource.type === type);
+  const files = renderInstallFiles(target, selected);
+  const result = await writeRenderedFiles(cwd, files, force);
+
+  console.log(`ok: installed ${target}`);
+  console.log(
+    `summary: ${selected.length} resources; wrote ${result.written}; skipped ${result.skipped}`,
+  );
 };
 
-const syncSiteCommand = async (args: string[]): Promise<void> => {
-  const options = parseOptions(args);
-  const site = stringOption(options, 'site') ?? '../site';
-  const write = booleanOption(options, 'write');
-  const result = await syncSite({ siteRoot: resolve(process.cwd(), site), write });
+const pluginCommand = async (args: string[]): Promise<void> => {
+  const ecosystem = args[0];
+  if (ecosystem !== 'claude-code') fail('only claude-code plugin bundles are supported');
 
-  if (!write) {
-    console.log('summary: dry run, no files written');
-    console.log(
-      `next steps: rerun with --write to update ${result.recipes.length} catalog entries`,
-    );
-    return;
-  }
+  const { options } = splitArgs(args.slice(1));
+  const out = resolve(process.cwd(), stringOption(options, 'out') ?? '.');
+  const name = stringOption(options, 'name') ?? 'meabed-agent-kit';
+  const force = booleanOption(options, 'force');
+  const files = await pluginBundleFiles(name);
+  const result = await writeRenderedFiles(out, files, force);
 
-  console.log(`ok: synced site AI resources`);
-  console.log(`summary: wrote ${result.paths.length} catalog recipes`);
-  console.log('next steps: run `bun run generate && bun run validate`');
+  console.log('ok: wrote claude-code plugin bundle');
+  console.log(`summary: wrote ${result.written}; skipped ${result.skipped}`);
+  console.log(`next steps: point Claude Code at ${name} as a local plugin directory`);
 };
 
 const validateCommand = async (): Promise<void> => {
-  const errors = await validateCatalog();
+  const errors = await validateResources();
   if (errors.length) {
     for (const error of errors) console.error(`error: ${error}`);
     process.exitCode = 1;
     return;
   }
 
-  console.log('ok: catalog is valid');
+  console.log('ok: resources are valid');
 };
 
-const exportCommand = async (args: string[]): Promise<void> => {
-  const first = args[0];
-  const id = first && !first.startsWith('--') ? first : null;
-  const options = parseOptions(id ? args.slice(1) : args);
-  const target = requiredTarget(options);
-  const out = resolve(process.cwd(), stringOption(options, 'out') ?? '.');
-  const force = booleanOption(options, 'force');
-  const recipes = id ? [await requiredRecipe(id)] : await readCatalog();
-  const files = recipes.map((recipe) => renderRecipe(recipe, target));
-  const result = await writeRenderedFiles(out, files, force);
+const splitArgs = (args: string[]): { refs: string[]; options: CliOptions } => {
+  const refs: string[] = [];
+  const optionArgs: string[] = [];
 
-  console.log(`ok: exported ${target}`);
-  console.log(`summary: wrote ${result.written}; skipped ${result.skipped}`);
-};
-
-const installCommand = async (args: string[]): Promise<void> => {
-  const id = requiredArg(args[0], 'install requires a resource id');
-  const options = parseOptions(args.slice(1));
-  const target = requiredTarget(options);
-  const cwd = resolve(process.cwd(), stringOption(options, 'cwd') ?? '.');
-  const force = booleanOption(options, 'force');
-  const recipe = await requiredRecipe(id);
-  const rendered = renderRecipe(recipe, target);
-  const result = await writeRenderedFiles(cwd, [rendered], force);
-
-  console.log(`ok: installed ${id} for ${target}`);
-  console.log(`summary: wrote ${result.written}; skipped ${result.skipped}`);
-};
-
-const requiredRecipe = async (id: string): Promise<Recipe> => {
-  const recipe = await findRecipe(id);
-  if (recipe) return recipe;
-  return fail(`resource not found: ${id}`);
-};
-
-const writeRenderedFiles = async (
-  root: string,
-  files: RenderedFile[],
-  force: boolean,
-): Promise<{ written: number; skipped: number }> => {
-  let written = 0;
-  let skipped = 0;
-
-  for (const file of files) {
-    const target = resolve(root, file.path);
-    const current = existsSync(target) ? await readFile(target, 'utf8') : null;
-    if (current === file.content) {
-      skipped += 1;
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i]!;
+    if (!arg.startsWith('--')) {
+      refs.push(arg);
       continue;
     }
-    if (current !== null && !force) {
-      console.log(`skip: ${file.path} exists; use --force to overwrite`);
-      skipped += 1;
-      continue;
+    optionArgs.push(arg);
+    const next = args[i + 1];
+    if (next && !next.startsWith('--')) {
+      optionArgs.push(next);
+      i += 1;
     }
-    await mkdir(dirname(target), { recursive: true });
-    await writeFile(target, file.content);
-    console.log(`write: ${file.path}`);
-    written += 1;
   }
 
-  return { written, skipped };
+  return { refs, options: parseOptions(optionArgs) };
 };
 
 const parseOptions = (args: string[]): CliOptions => {
@@ -187,28 +145,29 @@ const parseOptions = (args: string[]): CliOptions => {
   return options;
 };
 
-const requiredTarget = (options: CliOptions): Target => {
-  const value = stringOption(options, 'to');
-  if (!value) return fail('missing --to target');
+const requiredTarget = (value: string | undefined): Target => {
+  if (!value) return fail('install requires a target');
   if (!isTarget(value)) return fail(`unsupported target "${value}"`);
   return value;
 };
 
-const formatToTarget = (format: string): Target => {
-  if (format === 'claude-skill') return 'claude-code';
-  if (format === 'vscode-prompt') return 'vscode-copilot';
-  if (format === 'gemini-command') return 'gemini-cli';
-  if (format === 'opencode-command') return 'opencode';
-  if (format === 'cline-rule') return 'cline';
-  if (format === 'roo-rule') return 'roo-code';
-  if (format === 'codex-prompt') return 'codex';
-  if (isTarget(format)) return format;
-  return fail(`unsupported format "${format}"`);
+const optionalResourceType = (options: CliOptions): ResourceType | null => {
+  const value = stringOption(options, 'type');
+  if (!value) return null;
+  if (!isResourceType(value)) return fail(`unsupported resource type "${value}"`);
+  return value;
 };
 
-const requiredArg = (value: string | undefined, message: string): string => {
-  if (value) return value;
-  return fail(message);
+const resourceRefFromArgs = (refs: string[]): string => {
+  const [first, second] = refs;
+  if (first && second && isResourceType(first)) return `${first}/${second}`;
+  if (first) return first;
+  return fail('show requires a resource id, for example: show skill/remove-trivial-tests');
+};
+
+const requiredResource = (resource: Resource | undefined): Resource => {
+  if (resource) return resource;
+  return fail('resource not found');
 };
 
 const stringOption = (options: CliOptions, key: string): string | undefined => {
@@ -219,22 +178,23 @@ const stringOption = (options: CliOptions, key: string): string | undefined => {
 const booleanOption = (options: CliOptions, key: string): boolean => options[key] === true;
 
 const printHelp = (): void => {
-  console.log(`meabed-agent
+  console.log(`skills
 
 Usage:
-  meabed-agent list
-  meabed-agent show <id> [--format agent-prompt|claude-skill|vscode-prompt|gemini-command|opencode-command|cline-rule|roo-rule|codex-prompt|recipe]
-  meabed-agent install <id> --to <target> [--cwd .] [--force]
-  meabed-agent export [id] --to <target> [--out .] [--force]
-  meabed-agent sync-site --site ../site [--write]
-  meabed-agent generate
-  meabed-agent validate
+  skills list [--type skill|command|prompt|agent]
+  skills show <id>
+  skills show <type> <id>
+  skills install <target> [id...] [--type skill|command|prompt|agent] [--cwd .] [--force]
+  skills plugin claude-code [--out ./plugins] [--name meabed-agent-kit] [--force]
+  skills validate
 
 Targets:
-  agent-prompt, claude-code, codex, vscode-copilot, gemini-cli, opencode, cline, roo-code, windsurf-devin
+  claude-code, codex, vscode-copilot, gemini-cli, opencode, cline, roo-code, windsurf-devin
 
-Package root:
-  ${packageRoot()}
+Examples:
+  npx @meabed/skills list
+  npx @meabed/skills install claude-code --cwd .
+  npx @meabed/skills plugin claude-code --out ./plugins
 `);
 };
 
