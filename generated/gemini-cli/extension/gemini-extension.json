@@ -1,0 +1,6 @@
+{
+  "name": "meabed-agent-kit",
+  "version": "0.1.0",
+  "description": "Prompts, commands, and skills for engineering agents.",
+  "contextFileName": "GEMINI.md"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "meabed-agent-kit",
+  "displayName": "Meabed Agent Kit",
+  "description": "Prompts, skills, commands, and repo rules for coding agents.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Mohamed Meabed"
+  },
+  "homepage": "https://mo.ca/ai",
+  "repository": "https://github.com/meabed/agent-kit",
+  "license": "MIT"
+}

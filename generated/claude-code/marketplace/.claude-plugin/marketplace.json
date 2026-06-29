@@ -1,0 +1,17 @@
+{
+  "name": "meabed-agent-kit",
+  "owner": {
+    "name": "Mohamed Meabed"
+  },
+  "description": "Agent resources for engineering workflows.",
+  "plugins": [
+    {
+      "name": "meabed-agent-kit",
+      "source": "./plugins/meabed-agent-kit",
+      "description": "Prompts, skills, commands, and repo rules for coding agents.",
+      "version": "0.1.0",
+      "repository": "https://github.com/meabed/agent-kit",
+      "tags": ["coding-agents", "prompts", "skills", "engineering"]
+    }
+  ]
+}
