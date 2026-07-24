@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Repository Scope Guardrails'
+  short_description: 'Protect repository and generated-file boundaries'
+  default_prompt: 'Use $repository-scope-guardrails to resolve the safe write scope for this task.'

@@ -1,0 +1,4 @@
+interface:
+  display_name: 'PHP to Python Migration'
+  short_description: 'Migrate PHP jobs with artifact parity'
+  default_prompt: 'Use $php-to-python-migration to plan and prove this hard cutover to Python.'

@@ -23,9 +23,9 @@ Bun is the runtime, package manager, script runner, and test runner. Typecheck w
 
 - `commands/*.md`, `skills/*/SKILL.md`, `prompts/*.prompt.md`, and `agents/*.md` are authored by
   hand and are the source of truth.
-- `.claude-plugin/plugin.json` makes the repo itself a Claude Code plugin root.
+- `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json` expose native plugin manifests.
 - `src/resources.ts` discovers local resources.
-- `src/installers.ts` maps those resources into target agent workspace paths.
+- `src/installers.ts` maps complete resources into target-native workspace paths and plugin bundles.
 - `src/cli.ts` stays a thin command router.
 - No importer, renderer, or hidden source of truth for resource files.
 
@@ -43,6 +43,12 @@ Bun is the runtime, package manager, script runner, and test runner. Typecheck w
 - Keep examples concrete and repo-real when possible.
 - Commands should be immediately executable as slash-command instructions.
 - Skills should use `SKILL.md` frontmatter with strong trigger descriptions.
+- Skill directories may include `scripts/`, `references/`, `assets/`, and `agents/openai.yaml`; all
+  bundled files must install with the skill.
+- Keep resource IDs unique across commands, prompts, skills, and agents so cross-agent adapters do
+  not collide.
+- Do not distribute personal instruction dumps, private paths, contact details, credentials, or
+  transcript-mining artifacts.
 - Do not mention external publishing surfaces or import origins in resource files.
 
 ## Verification

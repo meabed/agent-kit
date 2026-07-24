@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Parallel Agent Execution'
+  short_description: 'Coordinate explicitly requested parallel agents'
+  default_prompt: 'Use $parallel-agent-execution to partition and reconcile this delegated task.'

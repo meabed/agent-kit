@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Domain Watcher'
+  short_description: 'Monitor domain and certificate expiry safely'
+  default_prompt: 'Use $domain-watcher to design a resilient expiry monitor for this domain inventory.'

@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Dependency Updater'
+  short_description: 'Upgrade dependencies through the repository gate'
+  default_prompt: 'Use $dependency-updater to update these packages safely and verify the migration.'

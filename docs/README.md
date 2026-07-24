@@ -8,5 +8,8 @@
 
 ## Core Model
 
-The repo stores the actual resource files. The CLI reads the root directories and copies the files
-into the paths used by each coding-agent tool.
+The repo stores the actual resource files. The CLI reads the root directories, preserves complete
+skill folders, and adapts each resource to paths and formats the target agent actually loads.
+
+The distributable catalog contains reusable, public workflows only. Personal instruction dumps,
+private paths, credentials, contact details, and transcript-mining artifacts do not belong here.

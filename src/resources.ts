@@ -2,7 +2,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { basename, join, relative } from 'node:path';
 import { splitFrontmatter } from './frontmatter.ts';
 import { packageRoot } from './paths.ts';
-import { RESOURCE_TYPES, type Resource, type ResourceType } from './types.ts';
+import { RESOURCE_TYPES, type Resource, type ResourceFile, type ResourceType } from './types.ts';
 
 export const readResources = async (root = packageRoot()): Promise<Resource[]> => {
   const groups = await Promise.all([
@@ -60,6 +60,7 @@ const readCommands = async (root: string): Promise<Resource[]> => {
         description,
         path: relative(root, join(dir, file)),
         content,
+        files: [],
       } satisfies Resource;
     }),
   );
@@ -83,6 +84,7 @@ const readPrompts = async (root: string): Promise<Resource[]> => {
           description: stringAttr(attrs.description) ?? titleFromBody(body, id),
           path: relative(root, join(dir, file)),
           content,
+          files: [],
         } satisfies Resource;
       }),
   );
@@ -103,6 +105,7 @@ const readAgents = async (root: string): Promise<Resource[]> => {
         description: stringAttr(attrs.description) ?? titleFromBody(body, id),
         path: relative(root, join(dir, file)),
         content,
+        files: [],
       } satisfies Resource;
     }),
   );
@@ -115,7 +118,8 @@ const readSkills = async (root: string): Promise<Resource[]> => {
     entries
       .filter((entry) => entry.isDirectory())
       .map(async (entry) => {
-        const path = join(dir, entry.name, 'SKILL.md');
+        const skillDir = join(dir, entry.name);
+        const path = join(skillDir, 'SKILL.md');
         const content = await readFile(path, 'utf8');
         const { attrs, body } = splitFrontmatter(content);
         return {
@@ -125,9 +129,33 @@ const readSkills = async (root: string): Promise<Resource[]> => {
           description: stringAttr(attrs.description) ?? titleFromBody(body, entry.name),
           path: relative(root, path),
           content,
+          files: await readResourceFiles(skillDir, skillDir, new Set(['SKILL.md'])),
         } satisfies Resource;
       }),
   );
+};
+
+const readResourceFiles = async (
+  dir: string,
+  root: string,
+  excluded: ReadonlySet<string>,
+): Promise<ResourceFile[]> => {
+  const entries = await readdir(dir, { withFileTypes: true }).catch(() => []);
+  const files: ResourceFile[] = [];
+
+  for (const entry of entries) {
+    const path = join(dir, entry.name);
+    const resourcePath = relative(root, path);
+    if (excluded.has(resourcePath)) continue;
+    if (entry.isDirectory()) {
+      files.push(...(await readResourceFiles(path, root, excluded)));
+      continue;
+    }
+    if (!entry.isFile()) continue;
+    files.push({ path: resourcePath, content: await readFile(path) });
+  }
+
+  return files.sort((a, b) => a.path.localeCompare(b.path));
 };
 
 const markdownFiles = async (dir: string): Promise<string[]> => {

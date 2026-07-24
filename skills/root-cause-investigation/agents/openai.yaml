@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Root Cause Investigation'
+  short_description: 'Trace failures to evidence before editing'
+  default_prompt: 'Use $root-cause-investigation to diagnose this failure before proposing a fix.'

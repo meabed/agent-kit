@@ -1,57 +1,22 @@
 ---
 name: spec-scaffold-tests
-description: 'This skill should be used when the user asks to apply "Spec, scaffold, then tests", mentions "spec-scaffold-tests", or needs this workflow: Write the design first, let the agent scaffold the shape and failing tests, then fill in the logic.'
-version: 0.1.0
+description: Turn an agreed behavior specification into a minimal scaffold and failing behavioral tests before implementation. Use for TDD handoffs, contract-first features, idempotency or permission invariants, parser behavior, API boundaries, and tasks explicitly requesting spec then scaffold then tests.
 ---
 
-# Spec, scaffold, then tests
+# Convert a specification into executable boundaries
 
-Write the design first, let the agent scaffold the shape and failing tests, then fill in the logic.
-
-## Instructions
-
-The most reliable way I use an agent isn’t “write this feature.” It’s a three-step relay where I keep the parts that need judgment and hand off the parts that don’t.
-
-```ts title="spec → scaffold → tests"
-// step 3 output: a failing suite that IS the spec
-describe('idempotent charge', () => {
-  it('charges once for a repeated key', async () => {
-    const key = 'idem_123';
-    await charge({ key, cents: 500 });
-    await charge({ key, cents: 500 }); // retry
-    expect(await totalCharged(key)).toBe(500); // not 1000
-  });
-
-  it('rejects a key reused with a different body', async () => {
-    await charge({ key: 'idem_9', cents: 500 });
-    await expect(charge({ key: 'idem_9', cents: 999 })).rejects.toThrow('idempotency key conflict');
-  });
-});
-```
-
-### Judgment stays with me
-
-The spec — what the system should do and why — is the part a model can’t own. I write that. The skeleton and the tests are mechanical translations of it, which is exactly what agents are good at.
-
-### A failing test is the contract
-
-Tests come before logic, so the agent and I agree on “done” before a line of implementation exists. The suite goes red, I make it green, and there’s never a debate about whether the feature works.
-
-<Principle title="The failing test is the handoff">
-  Let the agent scaffold the shape, but make the behavior executable before implementation starts.
-  The red test is the contract the code has to satisfy.
-</Principle>
-
-### Where it works best
-
-This pattern is strongest when the behavior has a crisp invariant: idempotency, permission checks,
-parser output, retry handling, API contract shape, billing math, or migration compatibility. The
-agent can scaffold the boring parts once the invariant is clear.
-
-It is weaker when the work is mostly product judgment or visual taste. In those cases I still want a
-written spec, but the verification might be screenshots, design review, or a manual acceptance pass
-instead of a unit test.
-
-## Verification
-
-Run the focused check for the files changed, then the repository normal verification gate. Report what changed, what passed, and any remaining risk.
+1. Read the applicable repository instructions and the agreed specification. Separate required
+   behavior, explicit non-goals, open decisions, and acceptance evidence.
+2. Stop for a material product decision the specification does not answer. Do not invent behavior
+   merely to make a test writable.
+3. Create only the smallest scaffold needed to expose the intended public boundary. Follow existing
+   module, naming, schema, and test conventions.
+4. Write tests that fail for the specified behavior before implementation. Cover the primary
+   invariant, relevant negative cases, retry or concurrency behavior, and boundary errors.
+5. Avoid filler tests that restate types, imports, constants, or mock wiring. Prefer observable
+   contracts over internal call counts.
+6. Prove the tests fail for the expected reason, not because the scaffold is malformed.
+7. Implement logic only when the request includes implementation. Otherwise hand off the red suite
+   with the exact command and the behavior each test encodes.
+8. After implementation, run the focused tests and full required gate and confirm the original red
+   failure is now green.

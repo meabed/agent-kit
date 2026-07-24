@@ -1,20 +1,57 @@
 # Agent Kit
 
-Hand-authored prompts, skills, commands, agents, and plugin files for coding agents.
+Portable, hand-authored skills, commands, prompts, and specialist agents.
 
-This repo is meant to be used directly. Edit the resource files by hand, review them like code, and
-install them into a project with the CLI when you want the same workflows available to an agent.
+The root resource directories are the source of truth. The CLI adapts each resource to the native
+workspace format supported by Claude Code, Codex, GitHub Copilot, Gemini CLI, OpenCode, Cline, Roo
+Code, Windsurf, and Devin.
 
-## Use With npx
+## Install
+
+Preview a complete cross-agent install:
 
 ```sh
-npx @meabed/skills list
-npx @meabed/skills show skill remove-trivial-tests
-npx @meabed/skills install claude-code --cwd .
-npx @meabed/skills plugin claude-code --out ./plugins
+npx @meabed/skills install all --cwd . --dry-run
 ```
 
-Local development:
+Install everything for one agent:
+
+```sh
+npx @meabed/skills install codex --cwd .
+npx @meabed/skills install claude-code --cwd .
+```
+
+Select or exclude resources:
+
+```sh
+npx @meabed/skills install github-copilot --type skill --cwd .
+npx @meabed/skills install all pyramid-communication pyramid --cwd .
+npx @meabed/skills install all --exclude domain-watcher,dependency-updater --cwd .
+```
+
+Build installable plugin bundles:
+
+```sh
+npx @meabed/skills plugin claude-code --out ./plugins
+npx @meabed/skills plugin codex --out ./plugins
+```
+
+The installer skips different existing files unless `--force` is passed. Restart or reload the
+target agent after installation.
+
+## Catalog
+
+- `commands/*.md` — manually invoked workflows and slash commands.
+- `skills/<name>/SKILL.md` — progressively disclosed Agent Skills.
+- `skills/<name>/agents/openai.yaml` — optional OpenAI UI metadata shipped with each skill.
+- `prompts/*.prompt.md` — reusable prompt templates.
+- `agents/*.md` — focused specialist-agent definitions.
+- `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json` — native plugin manifests.
+
+Resources are public and repository-neutral. Do not add personal instruction dumps, private paths,
+contact details, credentials, internal endpoints, or transcript-mining artifacts.
+
+## Develop
 
 ```sh
 bun install
@@ -22,29 +59,8 @@ bun run validate
 bun test
 bun run typecheck
 bun run lint
+bun run fmt:check
 bun run build
 ```
 
-## Repository Shape
-
-- `commands/*.md` - slash-command prompts.
-- `skills/<name>/SKILL.md` - reusable agent skills.
-- `prompts/*.prompt.md` - copy/paste or editor prompt files.
-- `agents/*.md` - subagent definitions.
-- `.claude-plugin/plugin.json` - makes this repo usable as a Claude Code plugin root.
-- `src/` - the installer CLI and validation code.
-- `docs/` - short docs for authoring and installation.
-
-## CLI
-
-```sh
-skills list
-skills list --type skill
-skills show command audit
-skills install claude-code --cwd .
-skills install codex --cwd .
-skills plugin claude-code --out ./plugins
-skills validate
-```
-
-The installer refuses to overwrite different files unless `--force` is passed.
+See [docs/README.md](docs/README.md) for authoring, installation, and adapter details.

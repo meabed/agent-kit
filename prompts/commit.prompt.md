@@ -1,19 +1,24 @@
+---
+description: Draft a conventional commit subject and evidence-based pull request body.
+---
+
 # Commit + PR description
 
-From the staged diff, produce:
+Lead with the change's outcome. From the staged diff, produce:
 
 ## commit subject
 
-- conventional-commit form: type(scope): summary
-- imperative mood, <= 72 chars, no trailing period
-- type ∈ feat fix refactor perf docs test chore
+- Use `type(scope): summary` in imperative mood.
+- Keep it at 72 characters or fewer with no trailing period.
+- Choose from `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, or `chore`.
 
 ## PR body
 
-- **What** — one line per user-visible or behavioral change.
-- **Why** — the problem this solves; link the issue.
-- **How verified** — the exact commands/tests you ran.
-- **Risk & release safety** — blast radius, flags, checks, and the forward-fix path.
+- **Outcome** — one sentence stating what is now true.
+- **Why** — the problem or requirement this addresses.
+- **Changes** — two to four non-overlapping points, each with relevant evidence.
+- **Verification** — exact commands and live checks actually run.
+- **Risk** — blast radius, release controls, remaining uncertainty, and forward-fix path.
 
-Describe intent, never the diff. If nothing is risky, say so.
-Omit any section that would be empty — don't pad.
+Describe intent and behavior, not a file-by-file diff. Do not invent issue links, test results, or
+release evidence. Omit empty sections.

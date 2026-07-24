@@ -1,61 +1,33 @@
 ---
 name: migration-review
-description: 'This skill should be used when the user asks to apply "Gate production migrations before review", mentions "migration-review", or needs this workflow: Block locking DDL, unsafe deploy order, and unbatched backfills before a human has to catch them.'
-version: 0.1.0
+description: Review database schema migrations and backfills for safe production rollout. Use when a diff touches migrations, schema definitions, indexes, constraints, deploy order, data backfills, or rollback and forward-fix plans.
 ---
 
-# Gate production migrations before review
+# Review production migrations
 
-Block locking DDL, unsafe deploy order, and unbatched backfills before a human has to catch them.
+Start with a `pass` or `hold` recommendation and the decisive reason.
 
-## Instructions
+## Inspect the real environment
 
-Migrations deserve a clear ship/hold decision before a reviewer has to infer safety from a diff. This skill runs the moment a change touches db/migrations/\*\*, and it has veto power. It encodes the rules I would otherwise repeat in every review.
+Identify the database engine and version, migration framework, table size and traffic assumptions,
+transaction behavior, deployment order, and rollback or forward-fix policy. Do not apply
+PostgreSQL-specific advice to another engine or assume a table is hot without evidence.
 
-```md title="skills/migration-review/SKILL.md"
-# skill: migration-review
+## Check the risk classes
 
-description: Gate any change under db/migrations/\*\* before review.
+- Compatibility between the old application, migration state, and new application during rollout.
+- Locks, table rewrites, long transactions, and blocking validation.
+- Index build strategy, uniqueness races, and write amplification.
+- Backfill batching, resumability, idempotency, throttling, and observability.
+- Constraint and default sequencing for existing rows.
+- Generated schemas, SDKs, replicas, queues, and downstream consumers affected by the change.
+- Failure recovery and the point after which rollback becomes unsafe.
 
-## when
+Prefer expand-migrate-contract sequencing when temporary compatibility is required for a rolling
+deploy. Do not preserve legacy fields indefinitely when the migration plan calls for a clean cut.
 
-A diff touches db/migrations/\*\* or schema.sql.
+## Report
 
-## check
-
-- safe to ship: the deploy order, checks, and forward-fix path are written down.
-- no locking DDL on hot tables (orders, ledger, sessions).
-- adds an index CONCURRENTLY; never a bare CREATE INDEX in a txn.
-- backfills run in batches, off the request path.
-
-## output
-
-A pass / hold verdict, then file:line notes. No prose.
-```
-
-### Why a skill, not a prompt
-
-A skill is addressable — the agent invokes it by name when a trigger matches, so I don’t have to remember to ask. The rules live in one file, version-controlled next to the code they protect.
-
-### It only says pass or hold
-
-No prose, no hedging. A verdict and file:line notes. If it can’t prove a migration is non-locking, batched, and safe to ship, it holds — and a human decides. Boring, predictable, exactly what you want guarding a schema.
-
-<Principle title="Schema changes deserve a verdict">
-  A migration review should end in pass or hold. If the deploy order, locks, batching, or checks are
-  unclear, the safest output is a hold with file-line evidence.
-</Principle>
-
-### The questions it asks first
-
-Can the old app and new app both survive the change? Does the migration lock a hot table? Is the
-backfill bounded, resumable, and outside the request path? Are generated clients, API contracts, and
-feature flags in the right order?
-
-Those questions are boring until one is missing. Then a migration becomes a deploy incident. The
-skill exists so the review starts with the failure classes that matter, not with whatever is easiest
-to comment on.
-
-## Verification
-
-Run the focused check for the files changed, then the repository normal verification gate. Report what changed, what passed, and any remaining risk.
+For each issue, return `path:line — failure mode — production impact — smallest safe change`. Name
+the verification query or rehearsal needed. Do not execute against production or shared data without
+explicit authorization.

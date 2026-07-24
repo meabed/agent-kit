@@ -1,13 +1,18 @@
 ---
 description: Commit, push, and optionally open a PR with one scoped commit.
+argument-hint: <optional branch or PR instructions>
 ---
 
-Commit, push, and (when asked) open a PR.
+Publish only the completed, in-scope work requested by the user.
 
-Steps:
-
-1. If on master/main, create a branch first (descriptive kebab-case name).
-2. Stage related changes and make a single conventional commit (feat/fix/chore/docs/refactor scope).
-3. Push to the branch (keep related work in the same PR — don't split into multiple PRs).
-4. When a PR is requested, run `gh pr create` with a concise title/body.
-5. Report the commit SHA(s) and push/PR status.
+1. Inspect the branch, status, diff, remote, and repository publication rules. Preserve unrelated
+   user changes.
+2. Run the required verification gate before committing.
+3. Respect the requested branch and publication mode. Do not invent a branch or PR when the user
+   explicitly requested direct publication, and do not push when publication was not requested.
+4. Stage only files belonging to this task. Split commits only when the changes have genuinely
+   independent purposes.
+5. Write concise conventional commits that describe intent.
+6. Push the exact commit to the intended remote. Create or update one PR only when requested.
+7. Verify the local and remote commit IDs, then report the branch, commit SHA, push status, PR URL
+   when applicable, and verification results.

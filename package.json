@@ -1,7 +1,7 @@
 {
   "name": "@meabed/skills",
-  "version": "0.1.0",
-  "description": "Hand-authored prompts, skills, commands, agents, and plugins for coding agents.",
+  "version": "0.2.0",
+  "description": "Portable prompts, skills, commands, agents, and plugins for software agents.",
   "homepage": "https://github.com/meabed/agent-kit",
   "license": "MIT",
   "repository": {
@@ -13,6 +13,7 @@
   },
   "files": [
     ".claude-plugin",
+    ".codex-plugin",
     "agents",
     "commands",
     "dist",

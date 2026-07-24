@@ -1,14 +1,17 @@
 ---
 description: Run a read-only audit and report concrete findings with file paths and line numbers.
+argument-hint: <scope or question>
 ---
 
-Read-only audit/recon. Do NOT modify any files.
+Run a read-only audit. Do not modify files, external systems, issues, pull requests, or messages.
 
 Output contract:
 
 - One finding per line: `path:line — observation — proposed fix`.
-- Group by category/file; order by severity/impact H → M → L.
-- Stay within a tight word budget (default ~350 words).
-- End with a short top-N summary of the highest-impact items.
+- Group by category or file and order findings by impact: high, medium, low.
+- Separate confirmed evidence from inference.
+- Omit praise and low-value style commentary.
+- End with the highest-impact findings and the remaining uncertainty.
 
-Include exact file paths and line numbers (or URLs). Be concrete; no speculation without evidence.
+Use repository-relative paths. Cite external sources with direct links when external research is part
+of the request.

@@ -1,0 +1,4 @@
+interface:
+  display_name: 'DaisyUI Conventions'
+  short_description: 'Keep DaisyUI interfaces consistent and verified'
+  default_prompt: 'Use $daisyui-design-conventions to implement and verify this DaisyUI change.'

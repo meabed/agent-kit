@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Pyramid Communication'
+  short_description: 'Write answer-first, MECE communication'
+  default_prompt: 'Use $pyramid-communication to rewrite this draft for an executive audience.'

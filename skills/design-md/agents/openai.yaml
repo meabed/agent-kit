@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Design Contract'
+  short_description: 'Create and enforce a concise visual system'
+  default_prompt: 'Use $design-md to derive a practical design contract from this repository.'

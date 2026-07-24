@@ -2,13 +2,14 @@
 description: Produce a concise end-of-task report with files, commands, decisions, and blockers.
 ---
 
-Produce an end-of-task report.
+Lead with the outcome in one sentence.
 
-Include:
+Then include only:
 
-- Files changed (absolute paths, grouped).
-- Commands run + their results/verification (typecheck/lint/test/build pass counts).
-- Key decisions made and why.
-- Remaining blockers or items left for integration / follow-up.
+- Repository-relative files changed, grouped by purpose.
+- Exact verification commands and results, including pass counts where available.
+- Material decisions and why they were necessary.
+- Remaining blockers, uncovered risk, or follow-up work.
 
-Keep it terse and scannable; no preamble.
+Do not expose private workspace paths, environment values, credentials, or unrelated local changes.
+Keep the report terse and scannable.

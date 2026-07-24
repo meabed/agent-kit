@@ -1,7 +1,16 @@
+---
+description: Review a diff for consequential correctness, safety, and regression risks.
+---
+
 # Pre-PR review pass
 
-You are a staff engineer reviewing a diff. Be terse.
+Lead with `ship` or `hold` and the most consequential reason.
 
-Flag only: correctness, retry-safety, blast radius.
-For each issue: file:line -> one-line fix. No praise, no nits.
-End with a single ship / hold verdict and one sentence why.
+Review the diff for correctness, security, retry or idempotency safety, data loss, contract drift,
+blast radius, and missing behavioral tests.
+
+For each finding, return `path:line — severity — failure mode — smallest safe fix`. Include only
+issues the author would act on. Do not include praise, nits, or speculative concerns without an
+evidence path.
+
+If there are no findings, say so and name any part of the change that could not be verified.

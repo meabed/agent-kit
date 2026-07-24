@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Migration Parity'
+  short_description: 'Prove required behavior survives a migration'
+  default_prompt: 'Use $migration-parity-check to define and verify parity for this migration.'

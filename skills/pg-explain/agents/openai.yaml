@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Postgres Plan Analysis'
+  short_description: 'Find the real bottleneck in a query plan'
+  default_prompt: 'Use $pg-explain to analyze this query and execution plan.'

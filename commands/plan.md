@@ -1,12 +1,17 @@
 ---
 description: Plan multi-step or ambiguous work before implementation.
+argument-hint: <goal or change>
 ---
 
-Produce a plan before implementing a large or ambiguous change.
+Produce an evidence-backed implementation plan without editing files.
 
-Steps:
+1. Read the applicable repository instructions and inspect the live implementation.
+2. Define the goal, in-scope surfaces, explicit exclusions, and acceptance evidence.
+3. Trace affected callers, contracts, generated boundaries, tests, docs, and deployment concerns.
+4. Sequence the smallest coherent implementation steps with files or modules, dependencies, and
+   verification after each risky step.
+5. Separate facts, assumptions, decisions, and unresolved questions.
+6. Ask only for decisions that cannot be discovered safely and would materially change the result.
+7. End with the full validation gate and the intended handoff.
 
-1. Analyze the codebase holistically to understand purpose, architecture, and the affected surface.
-2. Draft a concrete step-by-step plan (files/modules touched, sequence, risks).
-3. List ambiguous items and ask me to clarify them one by one; flag any logic gaps for me to decide.
-4. Share the plan and wait for confirmation before implementing. Don't deviate from the agreed plan without discussing first.
+Wait for confirmation when the user requested plan-first execution. Otherwise return the plan only.

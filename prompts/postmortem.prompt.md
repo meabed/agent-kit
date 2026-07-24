@@ -1,10 +1,17 @@
+---
+description: Turn incident evidence into a blameless, decision-ready postmortem.
+---
+
 # Blameless postmortem
 
-From the incident channel, logs, and alerts, draft a timeline.
+Lead with the confirmed impact and current status in one sentence.
 
-Rules:
+From the supplied incident evidence:
 
-- newest event last, UTC timestamps
-- name systems, never people
-- separate trigger from root cause from contributing factors
-- end with action items, each with an owner and a due date
+1. State impact, affected window, and recovery status.
+2. Build an oldest-to-newest UTC timeline. Attribute events to evidence sources.
+3. Separate trigger, root cause, contributing conditions, detection gaps, and mitigation.
+4. Mark hypotheses as hypotheses; do not fill evidence gaps with plausible stories.
+5. Name systems and roles, not individuals.
+6. End with prioritized corrective actions. Include an owner and due date only when supplied; use
+   `unassigned` rather than inventing them.

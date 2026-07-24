@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Remove Trivial Tests'
+  short_description: 'Replace shallow tests with behavioral coverage'
+  default_prompt: 'Use $remove-trivial-tests to audit every test touched by this branch.'

@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Migration Review'
+  short_description: 'Gate database migrations for safe rollout'
+  default_prompt: 'Use $migration-review to issue a pass or hold verdict for these schema changes.'

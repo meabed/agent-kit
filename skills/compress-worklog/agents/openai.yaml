@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Compress Worklog'
+  short_description: 'Compress work notes without losing evidence'
+  default_prompt: 'Use $compress-worklog to turn these notes into a dense, resumable worklog.'

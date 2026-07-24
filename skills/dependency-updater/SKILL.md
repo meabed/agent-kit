@@ -1,54 +1,23 @@
 ---
 name: dependency-updater
-description: 'This skill should be used when the user asks to apply "Dependency updates that only land green", mentions "dependency-updater", or needs this workflow: A scheduled job bumps packages, runs the repo checks, and pushes only when the branch earns it.'
-version: 0.1.0
+description: Update dependencies safely and completely in a repository or workspace. Use for package upgrades, lockfile refreshes, dependency-bot batches, release-note migrations, or automated update workflows that must land only after the repository's real checks pass.
 ---
 
-# Dependency updates that only land green
+# Update dependencies safely
 
-A scheduled job bumps packages, runs the repo checks, and pushes only when the branch earns it.
-
-## Instructions
-
-Manual dependency bumps rot the moment you stop doing them. This is the job I schedule instead: it walks a list of repos, updates every `package.json` to latest, runs the project's own checks, and pushes a single commit per repo — but only when the build stays green.
-
-```ts title="update-deps.ts"
-type Repo = { remote: string; branch: string; verify?: string[] };
-
-async function updateRepo({ remote, branch, verify = [] }: Repo) {
-  const dir = `/tmp/dep-update/${slug(remote)}`;
-  await $`git clone --depth 1 -b ${branch} ${remote} ${dir}`;
-
-  // bump every package.json in the tree, skipping node_modules
-  for (const pkg of new Bun.Glob('**/package.json').scanSync({ cwd: dir })) {
-    if (pkg.includes('node_modules')) continue;
-    await $`bunx npm-check-updates -u`.cwd(dirname(`${dir}/${pkg}`));
-  }
-  await $`bun install`.cwd(dir);
-
-  // the repo's OWN checks decide whether the bump ships
-  for (const cmd of ['bun run typecheck', 'bun run test', ...verify]) {
-    await $`${{ raw: cmd }}`.cwd(dir); // throws on failure → repo skipped
-  }
-
-  await $`git -C ${dir} commit -am "chore: update dependencies"`;
-  await $`git -C ${dir} push origin ${branch}`;
-}
-```
-
-### Let the repo's own checks be the gate
-
-The job doesn't decide whether an upgrade is safe — the repo does. It runs that project's `typecheck` and `test` before it pushes, so a breaking bump fails loudly in the runner and never reaches `main`. A repo with no tests gets no safety net, which is itself useful signal.
-
-### One commit per repo, on a schedule
-
-Running daily at a quiet hour with a single `chore: update dependencies` commit keeps drift small enough to review at a glance. Small frequent bumps are reversible; the once-a-quarter mega-upgrade is the one that pages you.
-
-<Tradeoff title="Frequent small updates need real checks">
-  A daily updater is only calmer if each repo can reject a bad bump. Without meaningful gates, the
-  automation just ships uncertainty faster.
-</Tradeoff>
-
-## Verification
-
-Run the focused check for the files changed, then the repository normal verification gate. Report what changed, what passed, and any remaining risk.
+1. Read the repository instructions and identify the actual package manager, workspace layout,
+   lockfiles, update policy, supported runtime, and required gates.
+2. Inspect the current diff before changing anything. Preserve unrelated user upgrades and never
+   downgrade a package merely to avoid migration work.
+3. Group upgrades by dependency relationship and risk. Read first-party release notes for breaking
+   or security-sensitive changes.
+4. Update manifests and the canonical lockfile with the repository's package manager. Remove
+   dependencies made obsolete by the migration.
+5. Adapt callers, config, tests, generated inputs, CI, and docs directly to the current API. Do not
+   add compatibility wrappers to preserve an obsolete interface unless the user requires them.
+6. Run focused checks for changed integrations, then the full repository gate. Treat install
+   warnings, peer conflicts, duplicate versions, and generated drift as findings rather than noise.
+7. For automation, isolate each repository, use bounded concurrency, stop before commit or push when
+   verification fails, and never print credentials.
+8. Publish only when explicitly requested. Report versions changed, migration work, exact checks,
+   unresolved advisories, and remaining release risk.

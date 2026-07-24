@@ -2,6 +2,7 @@
 import { resolve } from 'node:path';
 import {
   isTarget,
+  isPluginEcosystem,
   pluginBundleFiles,
   renderInstallFiles,
   writeRenderedFiles,
@@ -66,34 +67,41 @@ const installCommand = async (args: string[]): Promise<void> => {
   const { refs, options } = splitArgs(args.slice(1));
   const cwd = resolve(process.cwd(), stringOption(options, 'cwd') ?? '.');
   const force = booleanOption(options, 'force');
+  const dryRun = booleanOption(options, 'dry-run');
   const type = optionalResourceType(options);
   const { resources, missing } = await findResources(refs);
   if (missing.length) fail(`resource not found: ${missing.join(', ')}`);
 
-  const selected = resources.filter((resource) => !type || resource.type === type);
-  const files = renderInstallFiles(target, selected);
-  const result = await writeRenderedFiles(cwd, files, force);
-
-  console.log(`ok: installed ${target}`);
-  console.log(
-    `summary: ${selected.length} resources; wrote ${result.written}; skipped ${result.skipped}`,
+  const excluded = await excludedResources(options);
+  const selected = resources.filter(
+    (resource) => (!type || resource.type === type) && !excluded.has(resourceKey(resource)),
   );
+  const files = renderInstallFiles(target, selected);
+  const result = await writeRenderedFiles(cwd, files, { force, dryRun });
+
+  console.log(`ok: ${dryRun ? 'planned' : 'installed'} ${target}`);
+  console.log(
+    `summary: ${selected.length} resources; wrote ${result.written}; planned ${result.planned}; skipped ${result.skipped}`,
+  );
+  console.log('next steps: restart or reload the target agent so it discovers the installed files');
 };
 
 const pluginCommand = async (args: string[]): Promise<void> => {
-  const ecosystem = args[0];
-  if (ecosystem !== 'claude-code') fail('only claude-code plugin bundles are supported');
+  const ecosystem = requiredPluginEcosystem(args[0]);
 
   const { options } = splitArgs(args.slice(1));
   const out = resolve(process.cwd(), stringOption(options, 'out') ?? '.');
   const name = stringOption(options, 'name') ?? 'meabed-agent-kit';
   const force = booleanOption(options, 'force');
-  const files = await pluginBundleFiles(name);
-  const result = await writeRenderedFiles(out, files, force);
+  const dryRun = booleanOption(options, 'dry-run');
+  const files = await pluginBundleFiles(ecosystem, name);
+  const result = await writeRenderedFiles(out, files, { force, dryRun });
 
-  console.log('ok: wrote claude-code plugin bundle');
-  console.log(`summary: wrote ${result.written}; skipped ${result.skipped}`);
-  console.log(`next steps: point Claude Code at ${name} as a local plugin directory`);
+  console.log(`ok: ${dryRun ? 'planned' : 'wrote'} ${ecosystem} plugin bundle`);
+  console.log(
+    `summary: wrote ${result.written}; planned ${result.planned}; skipped ${result.skipped}`,
+  );
+  console.log(`next steps: add ${name} to a local ${ecosystem} plugin source and reload the agent`);
 };
 
 const validateCommand = async (): Promise<void> => {
@@ -151,6 +159,11 @@ const requiredTarget = (value: string | undefined): Target => {
   return value;
 };
 
+const requiredPluginEcosystem = (value: string | undefined): 'claude-code' | 'codex' => {
+  if (!value || !isPluginEcosystem(value)) return fail('plugin requires claude-code or codex');
+  return value;
+};
+
 const optionalResourceType = (options: CliOptions): ResourceType | null => {
   const value = stringOption(options, 'type');
   if (!value) return null;
@@ -177,6 +190,20 @@ const stringOption = (options: CliOptions, key: string): string | undefined => {
 
 const booleanOption = (options: CliOptions, key: string): boolean => options[key] === true;
 
+const excludedResources = async (options: CliOptions): Promise<Set<string>> => {
+  const raw = stringOption(options, 'exclude');
+  if (!raw) return new Set();
+  const refs = raw
+    .split(',')
+    .map((ref) => ref.trim())
+    .filter(Boolean);
+  const { resources, missing } = await findResources(refs);
+  if (missing.length) fail(`excluded resource not found: ${missing.join(', ')}`);
+  return new Set(resources.map(resourceKey));
+};
+
+const resourceKey = (resource: Resource): string => `${resource.type}/${resource.id}`;
+
 const printHelp = (): void => {
   console.log(`skills
 
@@ -184,17 +211,22 @@ Usage:
   skills list [--type skill|command|prompt|agent]
   skills show <id>
   skills show <type> <id>
-  skills install <target> [id...] [--type skill|command|prompt|agent] [--cwd .] [--force]
-  skills plugin claude-code [--out ./plugins] [--name meabed-agent-kit] [--force]
+  skills install <target> [id...] [--type skill|command|prompt|agent]
+    [--exclude id,id] [--cwd .] [--force] [--dry-run]
+  skills plugin <claude-code|codex> [--out ./plugins] [--name meabed-agent-kit]
+    [--force] [--dry-run]
   skills validate
 
 Targets:
-  claude-code, codex, vscode-copilot, gemini-cli, opencode, cline, roo-code, windsurf-devin
+  all, claude-code, codex, github-copilot, gemini-cli, opencode, cline,
+  roo-code, windsurf, devin
 
 Examples:
   npx @meabed/skills list
-  npx @meabed/skills install claude-code --cwd .
+  npx @meabed/skills install all --cwd . --dry-run
+  npx @meabed/skills install codex --type skill --cwd .
   npx @meabed/skills plugin claude-code --out ./plugins
+  npx @meabed/skills plugin codex --out ./plugins
 `);
 };
 
