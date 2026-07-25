@@ -3,7 +3,7 @@ name: compress-worklog
 description: Compress verbose work logs or session notes into a dense, resumable engineering record without losing decisions, commands, evidence, chronology, or unresolved work. Use for developer journals, handoffs, context compaction, and requests for maximum non-destructive compression.
 ---
 
-# Compress a work log without losing signal
+# Compress work logs
 
 Preserve every fact needed to reconstruct the work:
 

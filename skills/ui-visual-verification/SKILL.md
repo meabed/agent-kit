@@ -3,7 +3,7 @@ name: ui-visual-verification
 description: Verify user-interface behavior in a real browser with visual and runtime evidence. Use for UI fixes, navigation flows, responsive layouts, theme changes, authentication states, hard-refresh behavior, screenshot proof, or requests to test the rendered product end to end.
 ---
 
-# Verify the rendered interface
+# Verify UI changes visually
 
 1. Read the repository's run and test instructions. Confirm the target URL, environment, viewport
    matrix, user roles, and safe test data.

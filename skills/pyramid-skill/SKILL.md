@@ -1,17 +1,17 @@
 ---
-name: pyramid-communication
-description: Structure or rewrite professional communication using an answer-first pyramid with MECE support and evidence. Use for executive emails, Slack updates, memos, proposals, reports, presentations, status updates, decision notes, or requests for BLUF, SCQA, Minto Pyramid, concise executive writing, or clearer top-down logic.
+name: pyramid-skill
+description: 'Structure or rewrite communication using the Pyramid Principle: answer first, two to four MECE supporting points, and evidence under each point. Use for emails, messages, memos, proposals, reports, presentations, status updates, decision notes, BLUF, SCQA, or executive writing.'
 ---
 
-# Communicate top-down
+# Pyramid Principle
 
-## Choose the governing answer
+## State the answer
 
 Write one sentence that states the recommendation, decision, result, or required action. A reader
 should know what matters and what to do from that sentence alone. If the source does not support an
 answer, state the decision needed or the confirmed finding instead of manufacturing certainty.
 
-## Build the pyramid
+## Add supporting points
 
 Support the answer with two to four points at the same logical level:
 
@@ -24,7 +24,7 @@ Support the answer with two to four points at the same logical level:
 
 Delete content that is neither the answer, a reason, evidence, nor the necessary next action.
 
-## Use SCQA only when it earns its space
+## Use SCQA when context is required
 
 For a high-stakes memo, proposal, or presentation that needs context, use four compact lines:
 
@@ -38,7 +38,7 @@ Answer: The governing recommendation.
 Continue with the supporting pyramid. For routine email, chat, and status updates, lead directly with
 the answer.
 
-## Audit the draft
+## Check the result
 
 1. Test whether sentence one is actionable without the rest.
 2. List the middle-layer points and remove overlap.

@@ -3,7 +3,7 @@ name: writing-tests
 description: Write or review behavioral unit, integration, API, and end-to-end tests that can catch real regressions. Use when adding tests, practicing TDD, fixing a bug that needs regression coverage, covering negative cases, or improving brittle mocks and unsafe test cleanup.
 ---
 
-# Write tests that protect behavior
+# Write behavior-focused tests
 
 Before writing a test, state the failure mode it protects. If the answer is only that an import,
 typed value, export, or constant might not exist, leave that check to the compiler, schema, linter,

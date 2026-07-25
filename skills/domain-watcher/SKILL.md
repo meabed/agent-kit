@@ -3,7 +3,7 @@ name: domain-watcher
 description: Design, implement, or audit automated domain-registration and TLS-certificate expiry monitoring. Use for RDAP or WHOIS lookup jobs, certificate checks, expiry alerts, rolling issues, retry behavior, or resilient scheduled monitoring across a domain inventory.
 ---
 
-# Monitor domain and certificate expiry
+# Monitor domain and certificate expiration
 
 1. Resolve the inventory from a documented, non-secret source. Validate and normalize hostnames
    before making network requests.

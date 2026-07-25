@@ -1,4 +1,4 @@
 interface:
-  display_name: 'Spec, Scaffold, Tests'
-  short_description: 'Turn agreed behavior into a failing test contract'
-  default_prompt: 'Use $spec-scaffold-tests to scaffold this specification and its red tests.'
+  display_name: 'Specification Test Scaffold'
+  short_description: 'Generate tests from an agreed specification'
+  default_prompt: 'Use $spec-scaffold-tests to generate the initial tests for this specification.'

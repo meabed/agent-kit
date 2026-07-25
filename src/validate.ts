@@ -12,7 +12,7 @@ export const validateResources = async (): Promise<string[]> => {
     errors.push(...validateResource(resource, seen, seenIds));
   }
 
-  for (const type of RESOURCE_TYPES) {
+  for (const type of RESOURCE_TYPES.filter((resourceType) => resourceType !== 'agent')) {
     if (!resources.some((resource) => resource.type === type)) {
       errors.push(`missing resource type: ${type}`);
     }

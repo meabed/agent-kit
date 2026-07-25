@@ -1,4 +1,4 @@
 interface:
-  display_name: 'DaisyUI Conventions'
-  short_description: 'Keep DaisyUI interfaces consistent and verified'
+  display_name: 'DaisyUI Design Conventions'
+  short_description: 'Apply DaisyUI and Tailwind design conventions'
   default_prompt: 'Use $daisyui-design-conventions to implement and verify this DaisyUI change.'

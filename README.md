@@ -1,6 +1,6 @@
 # Agent Kit
 
-Portable, hand-authored skills, commands, prompts, and specialist agents.
+Portable, hand-authored skills, commands, and prompts.
 
 The root resource directories are the source of truth. The CLI adapts each resource to the native
 workspace format supported by Claude Code, Codex, GitHub Copilot, Gemini CLI, OpenCode, Cline, Roo
@@ -25,7 +25,7 @@ Select or exclude resources:
 
 ```sh
 npx @meabed/skills install github-copilot --type skill --cwd .
-npx @meabed/skills install all pyramid-communication pyramid --cwd .
+npx @meabed/skills install all pyramid-skill authentic-writing-tone --cwd .
 npx @meabed/skills install all --exclude domain-watcher,dependency-updater --cwd .
 ```
 
@@ -45,7 +45,6 @@ target agent after installation.
 - `skills/<name>/SKILL.md` — progressively disclosed Agent Skills.
 - `skills/<name>/agents/openai.yaml` — optional OpenAI UI metadata shipped with each skill.
 - `prompts/*.prompt.md` — reusable prompt templates.
-- `agents/*.md` — focused specialist-agent definitions.
 - `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json` — native plugin manifests.
 
 Resources are public and repository-neutral. Do not add personal instruction dumps, private paths,

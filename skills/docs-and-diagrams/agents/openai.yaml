@@ -1,4 +1,4 @@
 interface:
   display_name: 'Docs and Diagrams'
-  short_description: 'Keep documentation aligned with behavior'
+  short_description: 'Update documentation and diagrams with code changes'
   default_prompt: 'Use $docs-and-diagrams to update the relevant docs and diagrams for this change.'

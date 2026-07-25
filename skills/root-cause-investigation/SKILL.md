@@ -3,7 +3,7 @@ name: root-cause-investigation
 description: Diagnose bugs, discrepancies, regressions, and intermittent failures before changing logic. Use for requests to find the root cause, explain wrong values, trace flaky behavior, reproduce a failure, or distinguish a systemic defect from a local symptom.
 ---
 
-# Investigate before editing
+# Investigate root causes
 
 1. Restate the observed behavior, expected behavior, affected environment, frequency, and available
    evidence. Separate confirmed facts from assumptions.

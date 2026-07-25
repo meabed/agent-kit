@@ -3,7 +3,7 @@ name: agents-md
 description: Create, audit, or simplify AGENTS.md instruction hierarchies for coding repositories. Use when adding repository guidance, consolidating duplicate agent rules, creating scoped instructions, or aligning Claude, Codex, Copilot, Gemini, and other agents around one source of truth.
 ---
 
-# Maintain repository agent instructions
+# Create and update AGENTS.md
 
 ## Inspect before writing
 

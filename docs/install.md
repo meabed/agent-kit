@@ -4,12 +4,12 @@ Use `npx` without adding the package to the target repo:
 
 ```sh
 npx @meabed/skills list
-npx @meabed/skills show skill pyramid-communication
+npx @meabed/skills show skill pyramid-skill
 npx @meabed/skills install all --cwd . --dry-run
 npx @meabed/skills install claude-code --cwd .
 npx @meabed/skills install codex --cwd .
 npx @meabed/skills install github-copilot --type skill --cwd .
-npx @meabed/skills install all pyramid-communication pyramid --cwd .
+npx @meabed/skills install all pyramid-skill authentic-writing-tone --cwd .
 npx @meabed/skills install all --exclude domain-watcher,dependency-updater --cwd .
 npx @meabed/skills plugin claude-code --out ./plugins
 npx @meabed/skills plugin codex --out ./plugins
@@ -25,12 +25,10 @@ Use a specific target when the repository should carry configuration for only on
 
 Commands and prompts become native slash commands or workflows where the target supports them.
 Where it does not, the adapter wraps them as Agent Skills so the workflow remains discoverable.
-Specialist agents become native agent profiles for Codex, Copilot, Gemini, and OpenCode, and skills
-for targets without a compatible custom-agent format.
 
 Plugin bundles are generated under the selected `--out` directory. The Claude bundle contains
-commands, prompts-as-commands, skills with supporting files, and agents. The Codex bundle exposes
-the complete catalog as skills.
+commands, prompts-as-commands, and skills with supporting files. The Codex bundle exposes the
+complete catalog as skills.
 
 Local development:
 

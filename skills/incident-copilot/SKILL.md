@@ -3,7 +3,7 @@ name: incident-copilot
 description: Capture an evidence-based incident timeline and handoff while mitigation is underway. Use when following logs, metrics, deploys, alerts, and operator actions during an incident or when preparing factual input for a blameless postmortem.
 ---
 
-# Capture incident evidence
+# Investigate incidents
 
 ## Establish the record
 

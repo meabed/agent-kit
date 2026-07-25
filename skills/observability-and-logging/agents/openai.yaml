@@ -1,4 +1,4 @@
 interface:
   display_name: 'Observability and Logging'
-  short_description: 'Make failures inspectable without leaking data'
-  default_prompt: 'Use $observability-and-logging to instrument this path with safe, useful evidence.'
+  short_description: 'Add structured logging and traceability'
+  default_prompt: 'Use $observability-and-logging to add logging and tracing to this path.'

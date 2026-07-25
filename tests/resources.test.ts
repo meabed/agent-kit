@@ -13,34 +13,63 @@ const resource = (resources: Resource[], type: Resource['type'], id: string): Re
   return found;
 };
 
+const optionalAgent = {
+  id: 'test-agent',
+  type: 'agent',
+  title: 'Test agent',
+  description: 'Test optional specialist-agent installation paths.',
+  path: 'agents/test-agent.md',
+  content:
+    '---\nname: test-agent\ndescription: Test optional agent installation.\n---\n\n# Test agent\n\nFollow the requested test workflow.\n',
+  files: [],
+} satisfies Resource;
+
 describe('resources', () => {
-  it('discovers the curated hand-authored catalog', async () => {
+  it('preserves source-defined resource names', async () => {
     const resources = await readResources();
+    const reportSkillIds = [
+      'compress-worklog',
+      'docs-and-diagrams',
+      'migration-parity-check',
+      'observability-and-logging',
+      'parallel-agent-execution',
+      'root-cause-investigation',
+      'ui-visual-verification',
+      'writing-tests',
+    ];
 
-    expect(resources).toHaveLength(36);
+    expect(resources).toHaveLength(32);
+    for (const id of reportSkillIds) expect(resource(resources, 'skill', id)).toBeDefined();
+    expect(resource(resources, 'skill', 'authentic-writing-tone')).toBeDefined();
+    expect(resource(resources, 'skill', 'pyramid-skill')).toBeDefined();
     expect(resource(resources, 'command', 'verify')).toBeDefined();
-    expect(resource(resources, 'command', 'pyramid')).toBeDefined();
-    expect(resource(resources, 'prompt', 'pyramid-rewrite')).toBeDefined();
-    expect(resource(resources, 'skill', 'authentic-writing')).toBeDefined();
-    expect(resource(resources, 'skill', 'pyramid-communication')).toBeDefined();
-    expect(resource(resources, 'skill', 'repository-scope-guardrails')).toBeDefined();
-    expect(resource(resources, 'agent', 'instruction-architect')).toBeDefined();
+    expect(resource(resources, 'prompt', 'review')).toBeDefined();
 
+    expect(resources.some((item) => item.type === 'agent')).toBe(false);
     expect(resources.some((item) => item.id.startsWith('skill-'))).toBe(false);
-    expect(resources.some((item) => item.id === 'add-discord-notify')).toBe(false);
-    expect(resources.some((item) => item.id === 'agents-house-rules')).toBe(false);
+    for (const removed of [
+      'add-discord-notify',
+      'agents-house-rules',
+      'instruction-architect',
+      'pyramid',
+      'pyramid-communication',
+      'pyramid-rewrite',
+      'repository-scope-guardrails',
+    ]) {
+      expect(resources.some((item) => item.id === removed)).toBe(false);
+    }
   });
 
   it('preserves complete skill folders', async () => {
     const resources = await readResources();
-    const pyramid = resource(resources, 'skill', 'pyramid-communication');
+    const pyramid = resource(resources, 'skill', 'pyramid-skill');
 
     expect(pyramid.files.map((file) => file.path)).toEqual(['agents/openai.yaml']);
-    expect(new TextDecoder().decode(pyramid.files[0]?.content)).toContain('$pyramid-communication');
+    expect(new TextDecoder().decode(pyramid.files[0]?.content)).toContain('$pyramid-skill');
 
     const files = renderInstallFiles('codex', [pyramid]);
     expect(files.map((file) => file.path)).toContain(
-      '.agents/skills/pyramid-communication/agents/openai.yaml',
+      '.agents/skills/pyramid-skill/agents/openai.yaml',
     );
   });
 
@@ -50,96 +79,96 @@ describe('resources', () => {
 });
 
 describe('target adapters', () => {
-  it('maps every resource kind to native target paths', async () => {
+  it('maps each supported resource type to target paths', async () => {
     const resources = await readResources();
     const selected = [
       resource(resources, 'command', 'audit'),
-      resource(resources, 'prompt', 'pyramid-rewrite'),
-      resource(resources, 'skill', 'pyramid-communication'),
-      resource(resources, 'agent', 'instruction-architect'),
+      resource(resources, 'prompt', 'review'),
+      resource(resources, 'skill', 'pyramid-skill'),
+      optionalAgent,
     ];
 
     const expected = new Map<Target, string[]>([
       [
         'claude-code',
         [
-          '.claude/agents/instruction-architect.md',
+          '.claude/agents/test-agent.md',
           '.claude/commands/audit.md',
-          '.claude/commands/pyramid-rewrite.md',
-          '.claude/skills/pyramid-communication/SKILL.md',
+          '.claude/commands/review.md',
+          '.claude/skills/pyramid-skill/SKILL.md',
         ],
       ],
       [
         'codex',
         [
           '.agents/skills/audit/SKILL.md',
-          '.agents/skills/instruction-architect/SKILL.md',
-          '.agents/skills/pyramid-communication/SKILL.md',
-          '.agents/skills/pyramid-rewrite/SKILL.md',
-          '.codex/agents/instruction-architect.toml',
+          '.agents/skills/pyramid-skill/SKILL.md',
+          '.agents/skills/review/SKILL.md',
+          '.agents/skills/test-agent/SKILL.md',
+          '.codex/agents/test-agent.toml',
         ],
       ],
       [
         'github-copilot',
         [
-          '.github/agents/instruction-architect.md',
+          '.github/agents/test-agent.md',
           '.github/prompts/audit.prompt.md',
-          '.github/prompts/pyramid-rewrite.prompt.md',
-          '.github/skills/pyramid-communication/SKILL.md',
+          '.github/prompts/review.prompt.md',
+          '.github/skills/pyramid-skill/SKILL.md',
         ],
       ],
       [
         'gemini-cli',
         [
-          '.gemini/agents/instruction-architect.md',
+          '.gemini/agents/test-agent.md',
           '.gemini/commands/audit.toml',
-          '.gemini/commands/pyramid-rewrite.toml',
-          '.gemini/skills/pyramid-communication/SKILL.md',
+          '.gemini/commands/review.toml',
+          '.gemini/skills/pyramid-skill/SKILL.md',
         ],
       ],
       [
         'opencode',
         [
-          '.opencode/agents/instruction-architect.md',
+          '.opencode/agents/test-agent.md',
           '.opencode/commands/audit.md',
-          '.opencode/commands/pyramid-rewrite.md',
-          '.opencode/skills/pyramid-communication/SKILL.md',
+          '.opencode/commands/review.md',
+          '.opencode/skills/pyramid-skill/SKILL.md',
         ],
       ],
       [
         'cline',
         [
-          '.cline/skills/instruction-architect/SKILL.md',
-          '.cline/skills/pyramid-communication/SKILL.md',
+          '.cline/skills/pyramid-skill/SKILL.md',
+          '.cline/skills/test-agent/SKILL.md',
           '.clinerules/workflows/audit.md',
-          '.clinerules/workflows/pyramid-rewrite.md',
+          '.clinerules/workflows/review.md',
         ],
       ],
       [
         'roo-code',
         [
           '.roo/commands/audit.md',
-          '.roo/commands/pyramid-rewrite.md',
-          '.roo/skills/instruction-architect/SKILL.md',
-          '.roo/skills/pyramid-communication/SKILL.md',
+          '.roo/commands/review.md',
+          '.roo/skills/pyramid-skill/SKILL.md',
+          '.roo/skills/test-agent/SKILL.md',
         ],
       ],
       [
         'windsurf',
         [
-          '.windsurf/skills/instruction-architect/SKILL.md',
-          '.windsurf/skills/pyramid-communication/SKILL.md',
+          '.windsurf/skills/pyramid-skill/SKILL.md',
+          '.windsurf/skills/test-agent/SKILL.md',
           '.windsurf/workflows/audit.md',
-          '.windsurf/workflows/pyramid-rewrite.md',
+          '.windsurf/workflows/review.md',
         ],
       ],
       [
         'devin',
         [
           '.agents/skills/audit/SKILL.md',
-          '.agents/skills/instruction-architect/SKILL.md',
-          '.agents/skills/pyramid-communication/SKILL.md',
-          '.agents/skills/pyramid-rewrite/SKILL.md',
+          '.agents/skills/pyramid-skill/SKILL.md',
+          '.agents/skills/review/SKILL.md',
+          '.agents/skills/test-agent/SKILL.md',
         ],
       ],
     ]);
@@ -156,12 +185,12 @@ describe('target adapters', () => {
     const paths = files.map((file) => file.path);
 
     expect(new Set(paths).size).toBe(paths.length);
-    expect(paths).toContain('.agents/skills/pyramid-communication/SKILL.md');
-    expect(paths).toContain('.claude/commands/pyramid.md');
-    expect(paths).toContain('.github/prompts/pyramid-rewrite.prompt.md');
-    expect(paths).toContain('.gemini/commands/pyramid.toml');
-    expect(paths).toContain('.opencode/agents/instruction-architect.md');
-    expect(paths).toContain('.cline/skills/authentic-writing/SKILL.md');
+    expect(paths).toContain('.agents/skills/pyramid-skill/SKILL.md');
+    expect(paths).toContain('.claude/commands/verify.md');
+    expect(paths).toContain('.github/prompts/review.prompt.md');
+    expect(paths).toContain('.gemini/commands/verify.toml');
+    expect(paths).toContain('.opencode/commands/verify.md');
+    expect(paths).toContain('.cline/skills/authentic-writing-tone/SKILL.md');
     expect(paths).toContain('.roo/commands/verify.md');
     expect(paths).toContain('.windsurf/workflows/verify.md');
   });
@@ -198,10 +227,10 @@ describe('plugin bundles', () => {
     const paths = files.map((file) => file.path);
 
     expect(paths).toContain('test-agent-kit/.claude-plugin/plugin.json');
-    expect(paths).toContain('test-agent-kit/commands/pyramid-rewrite.md');
-    expect(paths).toContain('test-agent-kit/skills/pyramid-communication/SKILL.md');
-    expect(paths).toContain('test-agent-kit/skills/pyramid-communication/agents/openai.yaml');
-    expect(paths).toContain('test-agent-kit/agents/instruction-architect.md');
+    expect(paths).toContain('test-agent-kit/commands/review.md');
+    expect(paths).toContain('test-agent-kit/skills/pyramid-skill/SKILL.md');
+    expect(paths).toContain('test-agent-kit/skills/pyramid-skill/agents/openai.yaml');
+    expect(paths.some((path) => path.startsWith('test-agent-kit/agents/'))).toBe(false);
   });
 
   it('builds a Codex plugin with the complete catalog adapted as skills', async () => {
@@ -209,9 +238,9 @@ describe('plugin bundles', () => {
     const paths = files.map((file) => file.path);
 
     expect(paths).toContain('test-agent-kit/.codex-plugin/plugin.json');
-    expect(paths).toContain('test-agent-kit/skills/pyramid/SKILL.md');
-    expect(paths).toContain('test-agent-kit/skills/pyramid-rewrite/SKILL.md');
-    expect(paths).toContain('test-agent-kit/skills/pyramid-communication/SKILL.md');
-    expect(paths).toContain('test-agent-kit/skills/instruction-architect/SKILL.md');
+    expect(paths).toContain('test-agent-kit/skills/verify/SKILL.md');
+    expect(paths).toContain('test-agent-kit/skills/review/SKILL.md');
+    expect(paths).toContain('test-agent-kit/skills/pyramid-skill/SKILL.md');
+    expect(paths).toContain('test-agent-kit/skills/authentic-writing-tone/SKILL.md');
   });
 });

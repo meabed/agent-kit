@@ -3,7 +3,7 @@ name: dependency-updater
 description: Update dependencies safely and completely in a repository or workspace. Use for package upgrades, lockfile refreshes, dependency-bot batches, release-note migrations, or automated update workflows that must land only after the repository's real checks pass.
 ---
 
-# Update dependencies safely
+# Update dependencies
 
 1. Read the repository instructions and identify the actual package manager, workspace layout,
    lockfiles, update policy, supported runtime, and required gates.

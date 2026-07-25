@@ -3,7 +3,7 @@ name: observability-and-logging
 description: Add or review logs, metrics, traces, error reporting, and test hooks that make real failures inspectable without exposing sensitive data. Use for silent failures, missing instrumentation, correlation IDs, log levels, Sentry-style reporting, or proving runtime behavior from logs.
 ---
 
-# Make failures inspectable
+# Add observability and logging
 
 1. Start from the operator or user question the telemetry must answer. Trace the relevant request,
    job, state transition, or dependency boundary.

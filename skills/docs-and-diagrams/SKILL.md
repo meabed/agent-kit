@@ -3,7 +3,7 @@ name: docs-and-diagrams
 description: Update repository documentation and diagrams alongside behavior changes. Use when documenting architecture or workflows, revising README and API docs, adding Mermaid diagrams, repairing stale references, or finishing work whose commands, contracts, configuration, or operating procedures changed.
 ---
 
-# Keep documentation aligned with behavior
+# Update documentation and diagrams
 
 1. Identify the audience and the behavior that changed. Inspect the implementation and existing docs
    before writing.

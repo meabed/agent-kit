@@ -3,7 +3,7 @@ name: migration-parity-check
 description: Prove required behavioral parity during a refactor, language migration, provider change, or reimplementation. Use when matching a reference branch or sibling repository, preserving an external contract, replacing tricky logic, or explicitly checking parity before removing an old path.
 ---
 
-# Prove migration parity
+# Check migration parity
 
 ## Define the parity target
 

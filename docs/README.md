@@ -2,7 +2,7 @@
 
 ## Start Here
 
-- [Authoring](authoring.md) - how to write commands, skills, prompts, and agents by hand.
+- [Authoring](authoring.md) - how to write commands, skills, and prompts by hand.
 - [Adapter matrix](adapter-matrix.md) - where the CLI installs files for each target.
 - [Install](install.md) - npx and local install examples.
 

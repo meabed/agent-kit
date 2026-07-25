@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Pyramid Principle'
+  short_description: 'Write answer-first communication with MECE support'
+  default_prompt: 'Use $pyramid-skill to rewrite this draft using the Pyramid Principle.'

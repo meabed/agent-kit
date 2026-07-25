@@ -1,4 +1,4 @@
 interface:
   display_name: 'UI Visual Verification'
-  short_description: 'Verify real browser flows with visual evidence'
-  default_prompt: 'Use $ui-visual-verification to test this interface in the real browser.'
+  short_description: 'Verify UI changes in a browser with screenshots'
+  default_prompt: 'Use $ui-visual-verification to verify this UI change in a browser.'

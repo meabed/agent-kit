@@ -1,4 +1,0 @@
-interface:
-  display_name: 'Authentic Writing'
-  short_description: 'Write clear copy without generic AI phrasing'
-  default_prompt: 'Use $authentic-writing to rewrite this copy in a specific, credible voice.'

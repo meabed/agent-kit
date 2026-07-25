@@ -1,4 +1,4 @@
 interface:
-  display_name: 'Write Behavioral Tests'
-  short_description: 'Write tests that catch meaningful regressions'
+  display_name: 'Write Behavior-Focused Tests'
+  short_description: 'Write tests that protect observable behavior'
   default_prompt: 'Use $writing-tests to add focused regression coverage for this behavior.'

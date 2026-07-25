@@ -3,7 +3,7 @@ name: design-md
 description: Create or enforce a concise repository design contract for UI work. Use when authoring design.md, translating an existing visual system into agent-readable constraints, preventing generated UI drift, or reviewing implementation against tokens, typography, spacing, motion, and component boundaries.
 ---
 
-# Maintain a design contract
+# Create and update design.md
 
 ## Derive the system
 
