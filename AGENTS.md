@@ -12,6 +12,7 @@ Bun is the runtime, package manager, script runner, and test runner. Typecheck w
 ## Commands
 
 - `bun install`
+- `bun run release:check`
 - `bun run validate`
 - `bun test`
 - `bun run typecheck`
@@ -27,6 +28,8 @@ Bun is the runtime, package manager, script runner, and test runner. Typecheck w
 - `src/resources.ts` discovers local resources.
 - `src/installers.ts` maps complete resources into target-native workspace paths and plugin bundles.
 - `src/cli.ts` stays a thin command router.
+- `scripts/check-release.ts` keeps package and plugin versions aligned with the release tag.
+- `.github/workflows/npm-release.yml` publishes stable GitHub Releases to npm with Bun.
 - No importer, renderer, or hidden source of truth for resource files.
 
 ## Code Style

@@ -1,6 +1,7 @@
 # Adapter Matrix
 
-`agent-kit` installs hand-authored files into common coding-agent workspace paths.
+The `@meabed/skills` CLI installs hand-authored files into common coding-agent workspace paths.
+The official Skills CLI uses its own agent-path adapters and installs only `skills/*/SKILL.md`.
 
 | Target           | Skills                       | Commands and prompts                | Specialist agents                  |
 | ---------------- | ---------------------------- | ----------------------------------- | ---------------------------------- |

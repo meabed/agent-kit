@@ -1,6 +1,49 @@
 # Install
 
-Use `npx` without adding the package to the target repo:
+Agent Kit supports two installation paths:
+
+- Use the official Skills CLI for `skills/*/SKILL.md`.
+- Use the `@meabed/skills` npm CLI for the complete catalog of skills, commands, prompts, agents,
+  and plugin bundles.
+
+## Skills CLI
+
+Run the Skills CLI from the project that should receive the skills:
+
+```sh
+npx skills add meabed/agent-kit --list
+npx skills add meabed/agent-kit
+npx skills add meabed/agent-kit --all
+```
+
+Install one skill for selected agents:
+
+```sh
+npx skills add meabed/agent-kit \
+  --skill pyramid-communication \
+  --agent codex \
+  --agent claude-code \
+  --yes
+```
+
+Add `--global` to install into user-level agent directories instead of the current project. Use
+`--skill '*' --agent '*' --global --yes` for a non-interactive global installation of every skill
+for every supported agent.
+
+The Skills CLI clones `https://github.com/meabed/agent-kit`, discovers the skill directories, and
+installs the selected skills. The repository appears on skills.sh automatically after its
+installations are observed.
+
+This repository also publishes a binary named `skills`. From inside the Agent Kit source checkout,
+force the official Skills CLI package to avoid resolving the local binary:
+
+```sh
+npx --package=skills skills add meabed/agent-kit --list
+```
+
+## Complete Catalog CLI
+
+Run the npm package without adding it to the receiving project:
 
 ```sh
 npx @meabed/skills list
@@ -30,7 +73,7 @@ Plugin bundles are generated under the selected `--out` directory. The Claude bu
 commands, prompts-as-commands, and skills with supporting files. The Codex bundle exposes the
 complete catalog as skills.
 
-Local development:
+## Local Development
 
 ```sh
 bun install

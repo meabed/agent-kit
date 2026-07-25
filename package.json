@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/meabed/agent-kit.git"
+    "url": "git+https://github.com/meabed/agent-kit.git"
   },
   "bin": {
     "skills": "./dist/cli.js"
@@ -18,10 +18,15 @@
     "dist",
     "docs",
     "prompts",
+    "scripts",
     "skills",
     "README.md"
   ],
   "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "bun build ./src/cli.ts --target node --format esm --outfile dist/cli.js && chmod +x dist/cli.js",
     "dev": "bun src/cli.ts",
@@ -31,7 +36,8 @@
     "fmt:check": "oxfmt --check .",
     "typecheck": "tsgo --noEmit",
     "test": "bun test",
-    "prepack": "bun run build && bun run validate"
+    "release:check": "bun scripts/check-release.ts",
+    "prepack": "bun run build && bun run validate && bun run release:check"
   },
   "devDependencies": {
     "@types/bun": "1.3.14",
