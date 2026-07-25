@@ -1,6 +1,6 @@
 ---
 name: writing-tests
-description: Write or review behavioral unit, integration, API, and end-to-end tests that can catch real regressions. Use when adding tests, practicing TDD, fixing a bug that needs regression coverage, covering negative cases, or improving brittle mocks and unsafe test cleanup.
+description: Write or review tests that can catch real bugs. Use for unit, integration, API, or end-to-end tests, tests written before the code, tests for fixed bugs, failure cases, fragile mocks, or unsafe test cleanup.
 ---
 
 # Write behavior-focused tests

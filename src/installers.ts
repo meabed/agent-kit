@@ -52,8 +52,6 @@ const renderResource = (target: Exclude<Target, 'all'>, resource: Resource): Ren
       return renderCline(resource);
     case 'roo-code':
       return renderRoo(resource);
-    case 'windsurf':
-      return renderWindsurf(resource);
     case 'devin':
       return renderPortableSkill('.agents/skills', resource);
   }
@@ -163,23 +161,6 @@ const renderRoo = (resource: Resource): RenderedFile[] => {
     case 'command':
     case 'prompt':
       return [{ path: `.roo/commands/${resource.id}.md`, content: commandContent(resource) }];
-  }
-};
-
-const renderWindsurf = (resource: Resource): RenderedFile[] => {
-  switch (resource.type) {
-    case 'skill':
-      return renderNativeSkill('.windsurf/skills', resource);
-    case 'agent':
-      return renderPortableSkill('.windsurf/skills', resource);
-    case 'command':
-    case 'prompt':
-      return [
-        {
-          path: `.windsurf/workflows/${resource.id}.md`,
-          content: commandContent(resource),
-        },
-      ];
   }
 };
 

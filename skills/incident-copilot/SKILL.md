@@ -1,6 +1,6 @@
 ---
 name: incident-copilot
-description: Capture an evidence-based incident timeline and handoff while mitigation is underway. Use when following logs, metrics, deploys, alerts, and operator actions during an incident or when preparing factual input for a blameless postmortem.
+description: Track what happened during an incident using logs, alerts, releases, measurements, and actions taken. Use while fixing an incident, handing work to another person, or preparing facts for a blameless incident report.
 ---
 
 # Investigate incidents

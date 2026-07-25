@@ -1,5 +1,5 @@
 ---
-description: Run the full verification gate and fix failures before calling the work done.
+description: Run every required check, fix related failures, and prove the change works.
 argument-hint: <optional changed surface>
 ---
 

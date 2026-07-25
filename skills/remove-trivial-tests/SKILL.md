@@ -1,6 +1,6 @@
 ---
 name: remove-trivial-tests
-description: Audit branch-touched tests and remove or rewrite shallow coverage that cannot catch meaningful regressions. Use when reviewing AI-written tests, reducing brittle snapshots, cleaning mock-echo assertions, or classifying tests as keep, rewrite, delete, or flag.
+description: Find tests that look useful but cannot catch a real bug, then remove or rewrite them. Use when reviewing tests changed on a branch, AI-written tests, fragile snapshots, tests that only repeat mock values, or when each test needs a keep, rewrite, delete, or flag decision.
 ---
 
 # Remove trivial tests

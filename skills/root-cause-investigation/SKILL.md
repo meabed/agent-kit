@@ -1,6 +1,6 @@
 ---
 name: root-cause-investigation
-description: Diagnose bugs, discrepancies, regressions, and intermittent failures before changing logic. Use for requests to find the root cause, explain wrong values, trace flaky behavior, reproduce a failure, or distinguish a systemic defect from a local symptom.
+description: Find why a bug or failure happens before changing code. Use when values are wrong, behavior changed, failures come and go, a problem needs to be reproduced, or a visible symptom may come from a deeper issue.
 ---
 
 # Investigate root causes

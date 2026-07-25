@@ -1,6 +1,6 @@
 ---
 name: ui-visual-verification
-description: Verify user-interface behavior in a real browser with visual and runtime evidence. Use for UI fixes, navigation flows, responsive layouts, theme changes, authentication states, hard-refresh behavior, screenshot proof, or requests to test the rendered product end to end.
+description: Test a user-interface change in a real browser and collect screenshots, browser errors, and logs. Use for interface fixes, navigation, phone and desktop layouts, themes, signed-in states, page refreshes, or full user flows.
 ---
 
 # Verify UI changes visually

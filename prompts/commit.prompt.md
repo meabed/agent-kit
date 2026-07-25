@@ -1,5 +1,5 @@
 ---
-description: Draft a conventional commit subject and evidence-based pull request body.
+description: Write a conventional commit message and pull request description from the actual work.
 ---
 
 # Commit + PR description

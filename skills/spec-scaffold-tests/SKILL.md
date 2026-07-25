@@ -1,6 +1,6 @@
 ---
 name: spec-scaffold-tests
-description: Turn an agreed behavior specification into a minimal scaffold and failing behavioral tests before implementation. Use for TDD handoffs, contract-first features, idempotency or permission invariants, parser behavior, API boundaries, and tasks explicitly requesting spec then scaffold then tests.
+description: Turn an agreed behavior description into a small code outline and failing tests before implementation. Use when tests must be written first, or when defining repeated-request behavior, permissions, parsers, API rules, or a specification before coding.
 ---
 
 # Generate tests from a specification

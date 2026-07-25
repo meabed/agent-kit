@@ -51,10 +51,10 @@ Bun is the runtime, package manager, script runner, and test runner. Typecheck w
 - Skills should use `SKILL.md` frontmatter with strong trigger descriptions.
 - Skill directories may include `scripts/`, `references/`, `assets/`, and `agents/openai.yaml`; all
   bundled files must install with the skill.
-- Keep resource IDs unique across commands, prompts, skills, and agents so cross-agent adapters do
+- Keep resource IDs unique across commands, prompts, skills, and agents so installation paths do
   not collide.
-- Do not distribute personal instruction dumps, private paths, contact details, credentials, or
-  transcript-mining artifacts.
+- This is a personal collection, but every published file must be safe to share. Do not include
+  private paths, contact details, credentials, internal systems, or copied conversation logs.
 - Do not mention external publishing surfaces or import origins in resource files.
 
 ## Verification

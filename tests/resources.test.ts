@@ -81,8 +81,8 @@ describe('resources', () => {
   });
 });
 
-describe('target adapters', () => {
-  it('maps each supported resource type to target paths', async () => {
+describe('installation paths', () => {
+  it('installs each instruction type in the right folder', async () => {
     const resources = await readResources();
     const selected = [
       resource(resources, 'command', 'audit'),
@@ -157,15 +157,6 @@ describe('target adapters', () => {
         ],
       ],
       [
-        'windsurf',
-        [
-          '.windsurf/skills/pyramid-communication/SKILL.md',
-          '.windsurf/skills/test-agent/SKILL.md',
-          '.windsurf/workflows/audit.md',
-          '.windsurf/workflows/review.md',
-        ],
-      ],
-      [
         'devin',
         [
           '.agents/skills/audit/SKILL.md',
@@ -182,7 +173,7 @@ describe('target adapters', () => {
     }
   });
 
-  it('deduplicates shared paths in an all-agent install', async () => {
+  it('does not write the same path twice in an all-agent install', async () => {
     const resources = await readResources();
     const files = renderInstallFiles('all', resources);
     const paths = files.map((file) => file.path);
@@ -195,7 +186,6 @@ describe('target adapters', () => {
     expect(paths).toContain('.opencode/commands/verify.md');
     expect(paths).toContain('.cline/skills/writing-tests/SKILL.md');
     expect(paths).toContain('.roo/commands/verify.md');
-    expect(paths).toContain('.windsurf/workflows/verify.md');
   });
 
   it('preserves binary files in complete skill bundles', async () => {
@@ -236,7 +226,7 @@ describe('plugin bundles', () => {
     expect(paths.some((path) => path.startsWith('test-agent-kit/agents/'))).toBe(false);
   });
 
-  it('builds a Codex plugin with the complete catalog adapted as skills', async () => {
+  it('builds a Codex plugin with every instruction included as a skill', async () => {
     const files = await pluginBundleFiles('codex', 'test-agent-kit');
     const paths = files.map((file) => file.path);
 

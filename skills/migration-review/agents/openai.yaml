@@ -1,4 +1,4 @@
 interface:
   display_name: 'Migration Review'
-  short_description: 'Review database migrations for production safety'
+  short_description: 'Check database changes before deployment'
   default_prompt: 'Use $migration-review to review these database schema changes.'

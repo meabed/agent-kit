@@ -1,6 +1,6 @@
 ---
 name: pg-explain
-description: Analyze PostgreSQL EXPLAIN or EXPLAIN ANALYZE plans and recommend evidence-backed query or index changes. Use for slow SQL, planner estimate drift, buffer pressure, spills, join selection, or validating whether an optimization changed the real plan.
+description: Read PostgreSQL EXPLAIN or EXPLAIN ANALYZE output and suggest query or index changes supported by the plan. Use for slow SQL, wrong row estimates, heavy disk or memory use, poor joins, or checking whether a change improved the real query plan.
 ---
 
 # Analyze a PostgreSQL execution plan

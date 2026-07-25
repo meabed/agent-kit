@@ -1,6 +1,6 @@
 {
   "name": "meabed-agent-kit",
   "version": "0.2.0",
-  "description": "Portable skills and workflows for software agents.",
+  "description": "My reusable skills and instructions for coding agents.",
   "skills": "./skills/"
 }

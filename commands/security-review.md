@@ -1,5 +1,5 @@
 ---
-description: Run a read-only security review of dependency, auth, credential, and CI changes.
+description: Check dependencies, sign-in rules, secrets, and automated build or release changes for security problems.
 argument-hint: <optional diff or scope>
 ---
 

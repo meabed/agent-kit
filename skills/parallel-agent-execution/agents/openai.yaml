@@ -1,4 +1,4 @@
 interface:
   display_name: 'Parallel Agent Execution'
-  short_description: 'Run explicitly requested work with parallel agents'
-  default_prompt: 'Use $parallel-agent-execution to divide and reconcile this task.'
+  short_description: 'Split requested work safely between agents'
+  default_prompt: 'Use $parallel-agent-execution to split this task and combine the checked results.'

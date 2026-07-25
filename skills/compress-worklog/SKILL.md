@@ -1,6 +1,6 @@
 ---
 name: compress-worklog
-description: Compress verbose work logs or session notes into a dense, resumable engineering record without losing decisions, commands, evidence, chronology, or unresolved work. Use for developer journals, handoffs, context compaction, and requests for maximum non-destructive compression.
+description: Turn long work logs or session notes into a short record another agent can continue from. Keep decisions, commands, evidence, event order, open questions, and unfinished work. Use for handoffs, work journals, or shortening context without losing important details.
 ---
 
 # Compress work logs

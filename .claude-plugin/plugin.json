@@ -1,7 +1,7 @@
 {
   "name": "meabed-agent-kit",
   "displayName": "Meabed Agent Kit",
-  "description": "Portable skills and workflows for software agents.",
+  "description": "My reusable skills and instructions for coding agents.",
   "version": "0.2.0",
   "repository": "https://github.com/meabed/agent-kit",
   "license": "MIT"

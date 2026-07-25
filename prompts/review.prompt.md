@@ -1,5 +1,5 @@
 ---
-description: Review a diff for consequential correctness, safety, and regression risks.
+description: Review a diff for bugs, security problems, and changes that could break existing behavior.
 ---
 
 # Pre-PR review pass

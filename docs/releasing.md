@@ -2,8 +2,8 @@
 
 Push a conventional commit to `master`. The release workflow validates the repository, calculates
 the next version, publishes `@meabed/skills` to npm, and creates the matching Git tag and GitHub
-Release. GitHub remains the source for Skills CLI installations; npm distributes the complete
-catalog CLI.
+Release. The skills.sh installer reads skills from GitHub. The npm package contains the full
+collection.
 
 ## Commit Policy
 
@@ -28,7 +28,7 @@ must have publish access to the public `@meabed/skills` package. The workflow pa
 
 The clean commit immediately before semantic-release was introduced must have the `v0.2.0`
 baseline tag. This preserves the established `0.x` version line without exposing the older,
-removed catalog as an installable release.
+removed collection as an installable release.
 
 ## Validate a Release
 

@@ -1,4 +1,4 @@
 interface:
   display_name: 'Specification Test Scaffold'
-  short_description: 'Generate tests from an agreed specification'
+  short_description: 'Create a code outline and tests from agreed behavior'
   default_prompt: 'Use $spec-scaffold-tests to generate the initial tests for this specification.'

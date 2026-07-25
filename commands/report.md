@@ -1,5 +1,5 @@
 ---
-description: Produce a concise end-of-task report with files, commands, decisions, and blockers.
+description: Summarize what changed, what was checked, key decisions, and any remaining blockers.
 ---
 
 Lead with the outcome in one sentence.

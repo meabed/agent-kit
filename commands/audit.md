@@ -1,5 +1,5 @@
 ---
-description: Run a read-only audit and report concrete findings with file paths and line numbers.
+description: Inspect a repository without changing it and report clear findings with file locations.
 argument-hint: <scope or question>
 ---
 

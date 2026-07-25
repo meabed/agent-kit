@@ -1,6 +1,6 @@
 ---
 name: docs-and-diagrams
-description: Update repository documentation and diagrams alongside behavior changes. Use when documenting architecture or workflows, revising README and API docs, adding Mermaid diagrams, repairing stale references, or finishing work whose commands, contracts, configuration, or operating procedures changed.
+description: Keep documentation and diagrams in step with code changes. Use when updating a README, API docs, setup steps, architecture notes, Mermaid diagrams, commands, configuration, or instructions that are now out of date.
 ---
 
 # Update documentation and diagrams

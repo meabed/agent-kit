@@ -1,6 +1,6 @@
 ---
 name: daisyui-design-conventions
-description: Build or review interfaces in repositories that already use DaisyUI and Tailwind CSS. Use for DaisyUI components, theme tokens, light and dark modes, Tailwind styling, visual parity, or replacing hand-built lookalikes with the repository's real component system.
+description: Build or review a user interface in a project that already uses DaisyUI and Tailwind CSS. Use when working with DaisyUI components, themes, light and dark modes, Tailwind styles, matching an existing design, or replacing custom copies with the project's real components.
 ---
 
 # Apply DaisyUI design conventions

@@ -1,5 +1,5 @@
 ---
-description: Run a final holistic cleanup pass after the main work is complete.
+description: Review the whole change one last time and fix any remaining related issues.
 ---
 
 Take a final holistic pass over the just-completed work.

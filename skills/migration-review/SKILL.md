@@ -1,6 +1,6 @@
 ---
 name: migration-review
-description: Review database schema migrations and backfills for safe production rollout. Use when a diff touches migrations, schema definitions, indexes, constraints, deploy order, data backfills, or rollback and forward-fix plans.
+description: Review database migrations and data backfills before deployment. Use when a change affects tables, fields, indexes, constraints, deployment order, existing data, rollback, or a follow-up fix.
 ---
 
 # Review database migrations

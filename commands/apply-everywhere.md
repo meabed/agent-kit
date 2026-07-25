@@ -1,5 +1,5 @@
 ---
-description: Apply a fix or pattern consistently across the whole codebase.
+description: Find every matching case and apply the same fix across the repository.
 argument-hint: <pattern or naming change>
 ---
 

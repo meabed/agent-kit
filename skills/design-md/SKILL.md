@@ -1,6 +1,6 @@
 ---
 name: design-md
-description: Create or enforce a concise repository design contract for UI work. Use when authoring design.md, translating an existing visual system into agent-readable constraints, preventing generated UI drift, or reviewing implementation against tokens, typography, spacing, motion, and component boundaries.
+description: Create or update design.md with clear rules for colors, type, spacing, motion, and components. Use when a project needs consistent user-interface guidance, when turning an existing design into written rules, or when checking work against those rules.
 ---
 
 # Create and update design.md

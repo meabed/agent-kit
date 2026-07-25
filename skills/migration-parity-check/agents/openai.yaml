@@ -1,4 +1,4 @@
 interface:
   display_name: 'Migration Parity Check'
-  short_description: 'Compare reference and migrated behavior'
-  default_prompt: 'Use $migration-parity-check to compare reference and migrated behavior.'
+  short_description: 'Check that old and new behavior still match'
+  default_prompt: 'Use $migration-parity-check to check that the required behavior stayed the same.'

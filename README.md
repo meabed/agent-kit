@@ -3,64 +3,34 @@
 [![skills.sh](https://skills.sh/b/meabed/agent-kit)](https://skills.sh/)
 [![npm](https://img.shields.io/npm/v/@meabed/skills?label=npm)](https://www.npmjs.com/package/@meabed/skills)
 
-Public, hand-authored skills, commands, and prompts for software agents.
+My personal collection of reusable skills, commands, prompts, and agent instructions.
 
-## Quick Start
+I keep them in one public repository so I can use the same instructions with Codex, Claude Code,
+GitHub Copilot, Gemini CLI, and other coding agents.
 
-Run the official [Skills CLI](https://skills.sh/) from the project where you use your agent:
+## Choose What to Install
 
-```sh
-npx skills add meabed/agent-kit
-```
+| What you want                      | Command                                    |
+| ---------------------------------- | ------------------------------------------ |
+| Skills only, through skills.sh     | `npx skills add meabed/agent-kit`          |
+| Everything in this collection      | `npx @meabed/skills install all --cwd .`   |
+| Everything for one supported agent | `npx @meabed/skills install codex --cwd .` |
+| Preview the full install first     | `npx @meabed/skills install all --dry-run` |
 
-The interactive installer lets you choose the skills, agents, installation scope, and copy or
-symlink method. You do not need to clone this repository or add a package dependency.
+The two commands are different:
 
-To install every skill into every detected agent for the current project without prompts:
+- `npx skills` is the official [skills.sh](https://skills.sh/) installer. It installs only the
+  folders under `skills/`.
+- `npx @meabed/skills` is this repository's npm package. It installs skills, commands, prompts, and
+  agent definitions.
 
-```sh
-npx skills add meabed/agent-kit --all
-```
+## Install Skills with skills.sh
 
-To install every skill globally for every supported agent:
-
-```sh
-npx skills add meabed/agent-kit \
-  --skill '*' \
-  --agent '*' \
-  --global \
-  --yes
-```
-
-Restart or reload your agent after installation.
-
-## Choose an Installer
-
-| Need                                                    | Use                                 |
-| ------------------------------------------------------- | ----------------------------------- |
-| Install Agent Skills from GitHub through skills.sh      | `npx skills add meabed/agent-kit`   |
-| Install skills for one project                          | Skills CLI without `--global`       |
-| Install skills for every project                        | Skills CLI with `--global`          |
-| Install commands, prompts, agents, and skills           | `npx @meabed/skills install`        |
-| Build Claude Code or Codex plugin bundles               | `npx @meabed/skills plugin`         |
-| Test this repository before the npm package is released | `bun src/cli.ts` from a local clone |
-
-The Skills CLI installs only the Agent Skills under `skills/`. The `@meabed/skills` npm CLI
-installs the repository's complete resource catalog.
-
-## Install with Skills.sh
-
-### Browse the catalog
-
-List all skills without installing them:
+List the available skills:
 
 ```sh
 npx skills add meabed/agent-kit --list
 ```
-
-Skills.sh creates the repository page automatically after it processes installation telemetry.
-
-### Install in the current project
 
 Choose skills and agents interactively:
 
@@ -68,13 +38,10 @@ Choose skills and agents interactively:
 npx skills add meabed/agent-kit
 ```
 
-Install all skills for Codex:
+Install every skill into every detected agent:
 
 ```sh
-npx skills add meabed/agent-kit \
-  --skill '*' \
-  --agent codex \
-  --yes
+npx skills add meabed/agent-kit --all
 ```
 
 Install one skill for Codex and Claude Code:
@@ -87,30 +54,23 @@ npx skills add meabed/agent-kit \
   --yes
 ```
 
-Project installation is the default. The Skills CLI writes into agent directories under the
-current project so the installed skills can be committed and shared with the team.
-
-### Install globally
-
-Add `--global` when skills should be available from every project:
+Install skills globally so they are available in every project:
 
 ```sh
 npx skills add meabed/agent-kit \
-  --skill pyramid-communication \
-  --agent codex \
+  --skill '*' \
+  --agent '*' \
   --global \
   --yes
 ```
 
-### Use a skill without installing it
-
-Generate and run a skill prompt in a supported agent:
+Use one skill without installing it:
 
 ```sh
 npx skills use meabed/agent-kit@pyramid-communication --agent codex
 ```
 
-### Verify, update, or remove skills
+Check, update, or remove installed skills:
 
 ```sh
 npx skills list
@@ -118,61 +78,117 @@ npx skills update
 npx skills remove pyramid-communication
 ```
 
-The Skills CLI clones the public GitHub repository and discovers `skills/*/SKILL.md`. This
-installation path does not depend on the `@meabed/skills` npm release.
+Restart or reload the agent after installing a skill.
 
-## Install the Complete Catalog from npm
+## Install the Full Collection from npm
 
-Use the npm CLI when you need this repository's commands, prompts, specialist agents, or plugin
-adapters in addition to its Agent Skills. `npx` downloads and runs the CLI without adding it to the
-receiving project's dependencies.
+The npm package contains:
 
-Preview a complete cross-agent installation:
+- `skills/*/SKILL.md`
+- `commands/*.md`
+- `prompts/*.prompt.md`
+- `agents/*.md` when agent definitions exist
+- Claude Code and Codex plugin files
+
+There are no standalone agent definitions yet. When files are added under `agents/`, the npm
+package and installer will include them automatically.
+
+List everything in the published package:
+
+```sh
+npx @meabed/skills list
+```
+
+Preview every file before writing it:
 
 ```sh
 npx @meabed/skills install all --cwd . --dry-run
 ```
 
-Install the complete catalog for all supported agents:
+Install everything for all supported agents:
 
 ```sh
 npx @meabed/skills install all --cwd .
 ```
 
-Install the complete catalog for one agent:
+Install everything for one agent:
 
 ```sh
-npx @meabed/skills install codex --cwd .
 npx @meabed/skills install claude-code --cwd .
+npx @meabed/skills install codex --cwd .
 ```
 
-Select or exclude resources:
+Install only one kind of instruction:
 
 ```sh
-npx @meabed/skills list
-npx @meabed/skills show skill pyramid-communication
-npx @meabed/skills install github-copilot --type skill --cwd .
-npx @meabed/skills install all pyramid-communication --cwd .
+npx @meabed/skills install claude-code --type command --cwd .
+npx @meabed/skills install github-copilot --type prompt --cwd .
+npx @meabed/skills install codex --type skill --cwd .
+npx @meabed/skills install claude-code --type agent --cwd .
+```
+
+Install one named item or leave one out:
+
+```sh
+npx @meabed/skills install codex pyramid-communication --cwd .
 npx @meabed/skills install all --exclude dependency-updater --cwd .
 ```
 
-Build self-contained plugin bundles:
+Show one item before installing it:
+
+```sh
+npx @meabed/skills show skill pyramid-communication
+npx @meabed/skills show command audit
+```
+
+The installer skips an existing file when its contents differ. Review the path, then add `--force`
+only when you want to replace it.
+
+## Build Plugin Folders
+
+Create a complete plugin folder for Claude Code or Codex:
 
 ```sh
 npx @meabed/skills plugin claude-code --out ./plugins
 npx @meabed/skills plugin codex --out ./plugins
 ```
 
-Supported targets are `all`, `claude-code`, `codex`, `github-copilot`, `gemini-cli`, `opencode`,
-`cline`, `roo-code`, `windsurf`, and `devin`.
+The Claude Code plugin keeps commands as commands. The Codex plugin turns commands, prompts, and
+agent definitions into skills so Codex can load them.
 
-`--cwd` sets the receiving project. Resource IDs form an allowlist, `--type` selects one resource
-kind, and `--exclude` removes comma-separated resources. The installer skips different existing
-files unless `--force` is passed.
+## Supported Agents
+
+The full installer supports:
+
+- Claude Code
+- Codex
+- GitHub Copilot
+- Gemini CLI
+- OpenCode
+- Cline
+- Roo Code
+- Devin
+
+Use `all` to install for every supported agent.
+
+## How the Files Are Used
+
+| Source file                | What it provides                           |
+| -------------------------- | ------------------------------------------ |
+| `skills/<name>/SKILL.md`   | Instructions an agent can load when needed |
+| `commands/<name>.md`       | A task you start manually                  |
+| `prompts/<name>.prompt.md` | A reusable prompt                          |
+| `agents/<name>.md`         | Instructions for a focused helper agent    |
+
+Each coding agent stores these files in different folders. The npm installer writes each item where
+the selected agent expects it. When an agent supports only skills, the installer turns the command,
+prompt, or agent definition into a `SKILL.md` file.
+
+See the [installation path table](docs/installation-paths.md) for every destination.
 
 ## Run from a Local Clone
 
-Use the source CLI to test unpublished changes:
+Use the source version before a change is published:
 
 ```sh
 git clone https://github.com/meabed/agent-kit.git
@@ -180,50 +196,13 @@ cd agent-kit
 bun install
 bun src/cli.ts list
 bun src/cli.ts install all --cwd /path/to/project --dry-run
-bun src/cli.ts install codex --cwd /path/to/project
 ```
 
-## What Is Included
+## Keep Published Files Safe
 
-| Source                             | Purpose                                              |
-| ---------------------------------- | ---------------------------------------------------- |
-| `skills/<name>/SKILL.md`           | Agent Skills discovered by skills.sh and the npm CLI |
-| `skills/<name>/agents/openai.yaml` | Optional OpenAI UI metadata for a skill              |
-| `commands/*.md`                    | Manually invoked workflows and slash commands        |
-| `prompts/*.prompt.md`              | Reusable prompt templates                            |
-| `agents/*.md`                      | Optional specialist-agent definitions                |
-| `.claude-plugin/plugin.json`       | Claude Code plugin manifest                          |
-| `.codex-plugin/plugin.json`        | Codex plugin manifest                                |
-
-The root resource directories are the source of truth. The npm CLI preserves complete skill
-folders and adapts each resource to paths and formats the selected agent loads. See the
-[adapter matrix](docs/adapter-matrix.md) for exact destinations.
-
-Resources are public and repository-neutral. Do not add personal instruction dumps, private paths,
-contact details, credentials, internal endpoints, or transcript-mining artifacts.
-
-## Troubleshooting
-
-### `npx skills` runs the wrong CLI in this source checkout
-
-This package also exposes a local binary named `skills`. Force the official Skills CLI package when
-running from the Agent Kit source directory:
-
-```sh
-npx --package=skills skills add meabed/agent-kit --list
-```
-
-Normal receiving projects do not have this local-package collision.
-
-### The agent does not show a newly installed skill
-
-Restart or reload the agent. Confirm the installation with `npx skills list`, then check that the
-selected agent was included in the installation.
-
-### The npm CLI skips an existing file
-
-Run the installation with `--dry-run` first. Add `--force` only after reviewing the paths that will
-be replaced.
+This is a personal collection, but the repository and npm package are public. Do not add passwords,
+tokens, private paths, personal contact details, internal service addresses, or copied private
+conversations.
 
 ## Develop
 
@@ -238,25 +217,33 @@ bun run fmt:check
 bun run build
 ```
 
-## Release the npm Package
+## Release
 
-Every push to `master` runs [`.github/workflows/release.yml`](.github/workflows/release.yml). After
-the full Bun gate passes, semantic-release reads the conventional commits since the last tag,
-chooses the next version, stamps every package and plugin manifest, publishes `@meabed/skills`,
-creates the `v<version>` tag, and creates the GitHub Release.
+Every push to `master` runs the full check and then uses the commit message to decide whether to
+publish:
 
-Use `feat:` for a minor release, `fix:` for a patch, and `!` or a `BREAKING CHANGE:` footer for a
-major release. Documentation, test, CI, and unscoped chore commits validate without publishing.
+- `fix:` publishes a patch.
+- `feat:` publishes a minor version.
+- `!` or `BREAKING CHANGE:` publishes a major version.
+- `docs:`, `test:`, `ci:`, and plain `chore:` do not publish.
 
-Preview the decision locally:
+The workflow sets the version, publishes `@meabed/skills`, creates the Git tag, and creates the
+GitHub Release. Do not edit versions or create releases by hand.
+
+See [Release](docs/releasing.md) for setup and recovery details.
+
+## More Documentation
+
+- [Install](docs/install.md)
+- [Write instructions](docs/authoring.md)
+- [Installation paths](docs/installation-paths.md)
+- [Release](docs/releasing.md)
+
+### `npx skills` runs this package instead of the skills.sh installer
+
+This repository also publishes a command named `skills`. From inside this source checkout, force
+the official package:
 
 ```sh
-GITHUB_TOKEN="$(gh auth token)" bun run release:dry
+npx --package=skills skills add meabed/agent-kit --list
 ```
-
-The repository must provide an `NPM_TOKEN` Actions secret with publish access to
-`@meabed/skills`. Versions and release notes are automated; do not prepare version-bump commits or
-manual GitHub Releases. See [docs/releasing.md](docs/releasing.md) for the complete release
-contract.
-
-See [docs/README.md](docs/README.md) for authoring, installation, adapter, and release details.

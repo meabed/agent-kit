@@ -1,5 +1,5 @@
 ---
-description: Plan multi-step or ambiguous work before implementation.
+description: Inspect the repository and plan a complex or unclear change before editing files.
 argument-hint: <goal or change>
 ---
 

@@ -1,5 +1,5 @@
 ---
-description: Commit, push, and optionally open a PR with one scoped commit.
+description: Commit the completed work, push it, and open a pull request only when requested.
 argument-hint: <optional branch or PR instructions>
 ---
 

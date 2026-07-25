@@ -1,4 +1,4 @@
 interface:
   display_name: 'Incident Copilot'
-  short_description: 'Investigate incidents and record an evidence timeline'
+  short_description: 'Track an incident and record what happened'
   default_prompt: 'Use $incident-copilot to investigate this incident and record the timeline.'

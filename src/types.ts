@@ -11,7 +11,6 @@ export const TARGETS = [
   'opencode',
   'cline',
   'roo-code',
-  'windsurf',
   'devin',
 ] as const;
 

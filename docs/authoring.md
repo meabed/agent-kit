@@ -1,6 +1,6 @@
-# Authoring
+# Write Instructions
 
-Write the actual resource file you want an agent to consume.
+Write the instruction file you want an agent to use.
 
 ## Commands
 
@@ -16,7 +16,7 @@ Do NOT modify files.
 Report findings as `path:line - issue - proposed fix`.
 ```
 
-Write direct instructions to the agent. Keep one command focused on one manually invoked task.
+Write direct instructions to the agent. Keep each command focused on one task the user starts.
 
 ## Skills
 
@@ -25,7 +25,7 @@ Place skills in `skills/<name>/SKILL.md`.
 ```md
 ---
 name: remove-trivial-tests
-description: Audit tests that cannot catch meaningful regressions. Use when removing shallow tests.
+description: Find tests that cannot catch real bugs. Use when removing or rewriting weak tests.
 ---
 
 # Remove trivial tests
@@ -33,8 +33,8 @@ description: Audit tests that cannot catch meaningful regressions. Use when remo
 Classify tests by behavior protected. Keep, rewrite, delete, or flag each one.
 ```
 
-Use only `name` and `description` in portable skill frontmatter. The name must match the directory.
-Put trigger language in the description because agents see it before loading the body.
+Use only `name` and `description` at the top of `SKILL.md`. The name must match the directory.
+Say when the skill should be used in its description because agents read that line first.
 
 Optional supporting files belong beside `SKILL.md` under `scripts/`, `references/`, `assets/`, or
 product-specific `agents/` metadata. The installer copies the complete skill directory. Keep
@@ -42,14 +42,13 @@ product-specific `agents/` metadata. The installer copies the complete skill dir
 
 ## Prompts
 
-Place reusable prompt files in `prompts/<name>.prompt.md`. Include a `description` in frontmatter and
-write the reusable task directly.
+Place reusable prompt files in `prompts/<name>.prompt.md`. Add a clear `description` at the top and
+write the task directly.
 
 ## Agents
 
-Place specialist definitions in `agents/<name>.md`. Include `name` matching the filename and a
-trigger-rich `description`. Keep the body narrow enough to translate safely to each target's agent
-or skill format.
+Place focused agent definitions in `agents/<name>.md`. The `name` must match the filename. Write a
+clear description of when to use the agent, and keep its job narrow.
 
 ## Review Checklist
 
@@ -58,7 +57,7 @@ or skill format.
 - Does it name the failure mode or decision it protects?
 - Is it written as instructions rather than an article about agents?
 - Is the skill body concise, with detail moved to supporting files only when needed?
-- Is it free of filler, duplicate embedded resources, vague style advice, and origin notes?
-- Is it free of personal paths, contact details, secrets, private systems, and user-specific rule
-  dumps?
-- Does every resource ID remain unique across commands, prompts, skills, and agents?
+- Is it free of filler, copied instructions, vague advice, and notes about where it came from?
+- Is it safe to publish, with no private paths, contact details, secrets, internal systems, or
+  copied private conversations?
+- Does every name remain unique across commands, prompts, skills, and agents?

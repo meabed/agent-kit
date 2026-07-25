@@ -1,6 +1,6 @@
 ---
 name: parallel-agent-execution
-description: Coordinate explicitly requested multi-agent or subagent work with non-overlapping ownership and one reconciled result. Use only when the user or applicable repository instructions ask for delegation, parallel agents, a swarm, or subagents on a task that can be partitioned safely.
+description: Split work between agents only when the user or repository rules ask for it. Use for tasks that can be divided into separate parts without agents editing the same files, then combine their work into one checked result.
 ---
 
 # Run parallel agents

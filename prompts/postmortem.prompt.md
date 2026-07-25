@@ -1,5 +1,5 @@
 ---
-description: Turn incident evidence into a blameless, decision-ready postmortem.
+description: Write a factual, blameless incident report from the available evidence.
 ---
 
 # Blameless postmortem

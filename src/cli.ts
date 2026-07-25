@@ -219,7 +219,7 @@ Usage:
 
 Targets:
   all, claude-code, codex, github-copilot, gemini-cli, opencode, cline,
-  roo-code, windsurf, devin
+  roo-code, devin
 
 Examples:
   npx @meabed/skills list

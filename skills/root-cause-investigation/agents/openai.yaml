@@ -1,4 +1,4 @@
 interface:
   display_name: 'Root Cause Investigation'
-  short_description: 'Investigate failures and identify the root cause'
+  short_description: 'Find why a failure happens before changing code'
   default_prompt: 'Use $root-cause-investigation to diagnose this failure before proposing a fix.'
