@@ -1,4 +1,0 @@
-interface:
-  display_name: 'Authentic Writing Tone'
-  short_description: 'Remove generic AI phrasing and unsupported claims'
-  default_prompt: 'Use $authentic-writing-tone to rewrite this copy in a specific, factual voice.'

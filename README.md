@@ -25,8 +25,8 @@ Select or exclude resources:
 
 ```sh
 npx @meabed/skills install github-copilot --type skill --cwd .
-npx @meabed/skills install all pyramid-skill authentic-writing-tone --cwd .
-npx @meabed/skills install all --exclude domain-watcher,dependency-updater --cwd .
+npx @meabed/skills install all pyramid-communication --cwd .
+npx @meabed/skills install all --exclude dependency-updater --cwd .
 ```
 
 Build installable plugin bundles:

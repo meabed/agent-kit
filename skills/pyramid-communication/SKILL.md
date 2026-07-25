@@ -1,5 +1,5 @@
 ---
-name: pyramid-skill
+name: pyramid-communication
 description: 'Structure or rewrite communication using the Pyramid Principle: answer first, two to four MECE supporting points, and evidence under each point. Use for emails, messages, memos, proposals, reports, presentations, status updates, decision notes, BLUF, SCQA, or executive writing.'
 ---
 

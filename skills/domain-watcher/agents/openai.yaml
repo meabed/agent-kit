@@ -1,4 +1,0 @@
-interface:
-  display_name: 'Domain Watcher'
-  short_description: 'Monitor domain and TLS certificate expiration'
-  default_prompt: 'Use $domain-watcher to monitor expiration for this domain inventory.'

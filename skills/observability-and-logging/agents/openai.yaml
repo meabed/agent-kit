@@ -1,4 +1,0 @@
-interface:
-  display_name: 'Observability and Logging'
-  short_description: 'Add structured logging and traceability'
-  default_prompt: 'Use $observability-and-logging to add logging and tracing to this path.'

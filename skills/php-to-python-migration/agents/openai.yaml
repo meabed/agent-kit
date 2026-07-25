@@ -1,4 +1,0 @@
-interface:
-  display_name: 'PHP to Python Migration'
-  short_description: 'Migrate PHP behavior to Python with parity checks'
-  default_prompt: 'Use $php-to-python-migration to migrate and verify this PHP behavior in Python.'

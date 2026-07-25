@@ -4,13 +4,13 @@ Use `npx` without adding the package to the target repo:
 
 ```sh
 npx @meabed/skills list
-npx @meabed/skills show skill pyramid-skill
+npx @meabed/skills show skill pyramid-communication
 npx @meabed/skills install all --cwd . --dry-run
 npx @meabed/skills install claude-code --cwd .
 npx @meabed/skills install codex --cwd .
 npx @meabed/skills install github-copilot --type skill --cwd .
-npx @meabed/skills install all pyramid-skill authentic-writing-tone --cwd .
-npx @meabed/skills install all --exclude domain-watcher,dependency-updater --cwd .
+npx @meabed/skills install all pyramid-communication --cwd .
+npx @meabed/skills install all --exclude dependency-updater --cwd .
 npx @meabed/skills plugin claude-code --out ./plugins
 npx @meabed/skills plugin codex --out ./plugins
 ```

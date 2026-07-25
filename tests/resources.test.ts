@@ -31,17 +31,15 @@ describe('resources', () => {
       'compress-worklog',
       'docs-and-diagrams',
       'migration-parity-check',
-      'observability-and-logging',
       'parallel-agent-execution',
       'root-cause-investigation',
       'ui-visual-verification',
       'writing-tests',
     ];
 
-    expect(resources).toHaveLength(32);
+    expect(resources).toHaveLength(28);
     for (const id of reportSkillIds) expect(resource(resources, 'skill', id)).toBeDefined();
-    expect(resource(resources, 'skill', 'authentic-writing-tone')).toBeDefined();
-    expect(resource(resources, 'skill', 'pyramid-skill')).toBeDefined();
+    expect(resource(resources, 'skill', 'pyramid-communication')).toBeDefined();
     expect(resource(resources, 'command', 'verify')).toBeDefined();
     expect(resource(resources, 'prompt', 'review')).toBeDefined();
 
@@ -50,10 +48,15 @@ describe('resources', () => {
     for (const removed of [
       'add-discord-notify',
       'agents-house-rules',
+      'authentic-writing',
+      'authentic-writing-tone',
+      'domain-watcher',
       'instruction-architect',
+      'observability-and-logging',
+      'php-to-python-migration',
       'pyramid',
-      'pyramid-communication',
       'pyramid-rewrite',
+      'pyramid-skill',
       'repository-scope-guardrails',
     ]) {
       expect(resources.some((item) => item.id === removed)).toBe(false);
@@ -62,14 +65,14 @@ describe('resources', () => {
 
   it('preserves complete skill folders', async () => {
     const resources = await readResources();
-    const pyramid = resource(resources, 'skill', 'pyramid-skill');
+    const pyramid = resource(resources, 'skill', 'pyramid-communication');
 
     expect(pyramid.files.map((file) => file.path)).toEqual(['agents/openai.yaml']);
-    expect(new TextDecoder().decode(pyramid.files[0]?.content)).toContain('$pyramid-skill');
+    expect(new TextDecoder().decode(pyramid.files[0]?.content)).toContain('$pyramid-communication');
 
     const files = renderInstallFiles('codex', [pyramid]);
     expect(files.map((file) => file.path)).toContain(
-      '.agents/skills/pyramid-skill/agents/openai.yaml',
+      '.agents/skills/pyramid-communication/agents/openai.yaml',
     );
   });
 
@@ -84,7 +87,7 @@ describe('target adapters', () => {
     const selected = [
       resource(resources, 'command', 'audit'),
       resource(resources, 'prompt', 'review'),
-      resource(resources, 'skill', 'pyramid-skill'),
+      resource(resources, 'skill', 'pyramid-communication'),
       optionalAgent,
     ];
 
@@ -95,14 +98,14 @@ describe('target adapters', () => {
           '.claude/agents/test-agent.md',
           '.claude/commands/audit.md',
           '.claude/commands/review.md',
-          '.claude/skills/pyramid-skill/SKILL.md',
+          '.claude/skills/pyramid-communication/SKILL.md',
         ],
       ],
       [
         'codex',
         [
           '.agents/skills/audit/SKILL.md',
-          '.agents/skills/pyramid-skill/SKILL.md',
+          '.agents/skills/pyramid-communication/SKILL.md',
           '.agents/skills/review/SKILL.md',
           '.agents/skills/test-agent/SKILL.md',
           '.codex/agents/test-agent.toml',
@@ -114,7 +117,7 @@ describe('target adapters', () => {
           '.github/agents/test-agent.md',
           '.github/prompts/audit.prompt.md',
           '.github/prompts/review.prompt.md',
-          '.github/skills/pyramid-skill/SKILL.md',
+          '.github/skills/pyramid-communication/SKILL.md',
         ],
       ],
       [
@@ -123,7 +126,7 @@ describe('target adapters', () => {
           '.gemini/agents/test-agent.md',
           '.gemini/commands/audit.toml',
           '.gemini/commands/review.toml',
-          '.gemini/skills/pyramid-skill/SKILL.md',
+          '.gemini/skills/pyramid-communication/SKILL.md',
         ],
       ],
       [
@@ -132,13 +135,13 @@ describe('target adapters', () => {
           '.opencode/agents/test-agent.md',
           '.opencode/commands/audit.md',
           '.opencode/commands/review.md',
-          '.opencode/skills/pyramid-skill/SKILL.md',
+          '.opencode/skills/pyramid-communication/SKILL.md',
         ],
       ],
       [
         'cline',
         [
-          '.cline/skills/pyramid-skill/SKILL.md',
+          '.cline/skills/pyramid-communication/SKILL.md',
           '.cline/skills/test-agent/SKILL.md',
           '.clinerules/workflows/audit.md',
           '.clinerules/workflows/review.md',
@@ -149,14 +152,14 @@ describe('target adapters', () => {
         [
           '.roo/commands/audit.md',
           '.roo/commands/review.md',
-          '.roo/skills/pyramid-skill/SKILL.md',
+          '.roo/skills/pyramid-communication/SKILL.md',
           '.roo/skills/test-agent/SKILL.md',
         ],
       ],
       [
         'windsurf',
         [
-          '.windsurf/skills/pyramid-skill/SKILL.md',
+          '.windsurf/skills/pyramid-communication/SKILL.md',
           '.windsurf/skills/test-agent/SKILL.md',
           '.windsurf/workflows/audit.md',
           '.windsurf/workflows/review.md',
@@ -166,7 +169,7 @@ describe('target adapters', () => {
         'devin',
         [
           '.agents/skills/audit/SKILL.md',
-          '.agents/skills/pyramid-skill/SKILL.md',
+          '.agents/skills/pyramid-communication/SKILL.md',
           '.agents/skills/review/SKILL.md',
           '.agents/skills/test-agent/SKILL.md',
         ],
@@ -185,12 +188,12 @@ describe('target adapters', () => {
     const paths = files.map((file) => file.path);
 
     expect(new Set(paths).size).toBe(paths.length);
-    expect(paths).toContain('.agents/skills/pyramid-skill/SKILL.md');
+    expect(paths).toContain('.agents/skills/pyramid-communication/SKILL.md');
     expect(paths).toContain('.claude/commands/verify.md');
     expect(paths).toContain('.github/prompts/review.prompt.md');
     expect(paths).toContain('.gemini/commands/verify.toml');
     expect(paths).toContain('.opencode/commands/verify.md');
-    expect(paths).toContain('.cline/skills/authentic-writing-tone/SKILL.md');
+    expect(paths).toContain('.cline/skills/writing-tests/SKILL.md');
     expect(paths).toContain('.roo/commands/verify.md');
     expect(paths).toContain('.windsurf/workflows/verify.md');
   });
@@ -228,8 +231,8 @@ describe('plugin bundles', () => {
 
     expect(paths).toContain('test-agent-kit/.claude-plugin/plugin.json');
     expect(paths).toContain('test-agent-kit/commands/review.md');
-    expect(paths).toContain('test-agent-kit/skills/pyramid-skill/SKILL.md');
-    expect(paths).toContain('test-agent-kit/skills/pyramid-skill/agents/openai.yaml');
+    expect(paths).toContain('test-agent-kit/skills/pyramid-communication/SKILL.md');
+    expect(paths).toContain('test-agent-kit/skills/pyramid-communication/agents/openai.yaml');
     expect(paths.some((path) => path.startsWith('test-agent-kit/agents/'))).toBe(false);
   });
 
@@ -240,7 +243,7 @@ describe('plugin bundles', () => {
     expect(paths).toContain('test-agent-kit/.codex-plugin/plugin.json');
     expect(paths).toContain('test-agent-kit/skills/verify/SKILL.md');
     expect(paths).toContain('test-agent-kit/skills/review/SKILL.md');
-    expect(paths).toContain('test-agent-kit/skills/pyramid-skill/SKILL.md');
-    expect(paths).toContain('test-agent-kit/skills/authentic-writing-tone/SKILL.md');
+    expect(paths).toContain('test-agent-kit/skills/pyramid-communication/SKILL.md');
+    expect(paths).toContain('test-agent-kit/skills/writing-tests/SKILL.md');
   });
 });
