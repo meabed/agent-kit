@@ -58,11 +58,10 @@ On every push to `master`, `.github/workflows/release.yml`:
 
 1. checks out the full Git history and installs locked dependencies with `bun ci`;
 2. runs the release check and complete validation gate;
-3. previews the npm package contents;
-4. calculates the version from conventional commits;
-5. stamps the version into `package.json` and both plugin manifests;
-6. publishes the public package with `bun publish`;
-7. creates the `v<version>` Git tag and GitHub Release.
+3. calculates the version from conventional commits;
+4. stamps the version into `package.json` and both plugin manifests;
+5. publishes the public package with `bun publish`;
+6. creates the `v<version>` Git tag and GitHub Release.
 
 Commits that do not require a release still run the full gate and then stop without publishing.
 Do not edit versions manually, create release commits, or publish GitHub Releases by hand.

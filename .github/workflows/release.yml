@@ -64,9 +64,6 @@ jobs:
       - name: Build
         run: bun run build
 
-      - name: Preview npm package
-        run: bun publish --dry-run --access public
-
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
