@@ -1,0 +1,59 @@
+{
+  "branches": ["master"],
+  "tagFormat": "v${version}",
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "angular",
+        "releaseRules": [
+          { "breaking": true, "release": "major" },
+          { "breakingHeader": "!", "release": "major" },
+          { "type": "feat", "release": "minor" },
+          { "type": "fix", "release": "patch" },
+          { "type": "perf", "release": "patch" },
+          { "type": "refactor", "release": "patch" },
+          { "type": "revert", "release": "patch" },
+          { "type": "style", "release": "patch" },
+          { "type": "build", "release": "patch" },
+          { "type": "i18n", "release": "patch" },
+          { "type": "chore", "scope": "deps", "release": "patch" }
+        ],
+        "parserOpts": {
+          "headerPattern": "^(\\w+)(?:\\((.*)\\))?(!)?: (.*)$",
+          "headerCorrespondence": ["type", "scope", "breakingHeader", "subject"],
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
+        }
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "angular",
+        "parserOpts": {
+          "headerPattern": "^(\\w+)(?:\\((.*)\\))?(!)?: (.*)$",
+          "headerCorrespondence": ["type", "scope", "breakingHeader", "subject"],
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
+        },
+        "writerOpts": {
+          "commitsSort": ["subject", "scope"]
+        }
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "bun run release:prepare ${nextRelease.version}",
+        "publishCmd": "bun publish --access public"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "successCommentCondition": "<% return false; %>",
+        "failCommentCondition": "<% return false; %>"
+      }
+    ]
+  ],
+  "ci": true
+}

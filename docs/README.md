@@ -5,7 +5,7 @@
 - [Authoring](authoring.md) - how to write commands, skills, and prompts by hand.
 - [Adapter matrix](adapter-matrix.md) - where the CLI installs files for each target.
 - [Install](install.md) - skills.sh, npm CLI, and local install examples.
-- [Release](releasing.md) - version and npm publication contract.
+- [Release](releasing.md) - conventional commits, dry runs, and automatic npm publication.
 
 ## Core Model
 

@@ -240,20 +240,23 @@ bun run build
 
 ## Release the npm Package
 
-Publishing a stable GitHub Release runs
-[`.github/workflows/npm-release.yml`](.github/workflows/npm-release.yml). The workflow verifies the
-release version, runs the full Bun gate, previews the package, and publishes `@meabed/skills` to
-npm.
+Every push to `master` runs [`.github/workflows/release.yml`](.github/workflows/release.yml). After
+the full Bun gate passes, semantic-release reads the conventional commits since the last tag,
+chooses the next version, stamps every package and plugin manifest, publishes `@meabed/skills`,
+creates the `v<version>` tag, and creates the GitHub Release.
 
-Before publishing:
+Use `feat:` for a minor release, `fix:` for a patch, and `!` or a `BREAKING CHANGE:` footer for a
+major release. Documentation, test, CI, and unscoped chore commits validate without publishing.
 
-1. Set the same version in `package.json`, `.claude-plugin/plugin.json`, and
-   `.codex-plugin/plugin.json`.
-2. Run the development commands above.
-3. Commit and push the changes.
-4. Publish a GitHub Release tagged `v<version>`, such as `v0.2.0`.
+Preview the decision locally:
+
+```sh
+GITHUB_TOKEN="$(gh auth token)" bun run release:dry
+```
 
 The repository must provide an `NPM_TOKEN` Actions secret with publish access to
-`@meabed/skills`. See [docs/releasing.md](docs/releasing.md) for the complete release contract.
+`@meabed/skills`. Versions and release notes are automated; do not prepare version-bump commits or
+manual GitHub Releases. See [docs/releasing.md](docs/releasing.md) for the complete release
+contract.
 
 See [docs/README.md](docs/README.md) for authoring, installation, adapter, and release details.

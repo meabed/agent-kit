@@ -1,29 +1,39 @@
-name: npm release
+name: Release
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Calculate the release without publishing'
+        required: false
+        type: boolean
+        default: true
+  push:
+    branches:
+      - master
 
 permissions:
   contents: read
 
-concurrency:
-  group: npm-release-${{ github.event.release.tag_name }}
-  cancel-in-progress: false
-
 jobs:
-  publish:
-    if: ${{ github.repository == 'meabed/agent-kit' && !github.event.release.prerelease }}
+  release:
+    name: Validate and publish
+    if: ${{ github.repository == 'meabed/agent-kit' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      RELEASE_TAG: ${{ github.event.release.tag_name }}
+    timeout-minutes: 20
+    concurrency:
+      group: release-${{ github.ref }}
+      cancel-in-progress: false
+
+    permissions:
+      contents: write
 
     steps:
-      - name: Check out release
+      - name: Check out full history
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
@@ -33,7 +43,7 @@ jobs:
       - name: Install dependencies
         run: bun ci
 
-      - name: Verify release metadata
+      - name: Validate release metadata
         run: bun run release:check
 
       - name: Validate resources
@@ -57,7 +67,9 @@ jobs:
       - name: Preview npm package
         run: bun publish --dry-run --access public
 
-      - name: Publish npm package
-        run: bun publish --access public
+      - name: Release
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DRY_RUN_FLAG: ${{ inputs.dry-run && '--dry-run' || '' }}
+        run: bun run release $DRY_RUN_FLAG

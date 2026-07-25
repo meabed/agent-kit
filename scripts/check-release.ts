@@ -24,14 +24,9 @@ for (const [path, version] of versions) {
   }
 }
 
-const releaseTag = process.env.RELEASE_TAG;
-if (releaseTag && releaseTag !== `v${packageVersion}`) {
-  fail(`release tag ${releaseTag} does not match package version v${packageVersion}`);
-}
-
 console.log(`ok: release metadata matches version ${packageVersion}`);
 console.log(`summary: ${manifestPaths.length} manifests use version ${packageVersion}`);
-console.log(`next steps: publish GitHub Release v${packageVersion} from this commit`);
+console.log('next steps: run the full validation gate before release');
 
 async function readVersion(path: string): Promise<string> {
   const content = await readFile(new URL(`../${path}`, import.meta.url), 'utf8');
