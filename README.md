@@ -5,6 +5,9 @@
 
 My personal collection of reusable skills, commands, prompts, and agent instructions.
 
+For recurring content and design work, use [Maintain engineering site](skills/maintain-engineering-site/SKILL.md).
+It covers evidence-based article planning, resource updates, the existing site design, and maintenance checks.
+
 I keep them in one public repository so I can use the same instructions with Codex, Claude Code,
 GitHub Copilot, Gemini CLI, and other coding agents.
 

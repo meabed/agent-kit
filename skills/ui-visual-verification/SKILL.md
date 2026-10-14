@@ -18,7 +18,11 @@ description: Test a user-interface change in a real browser and collect screensh
    viewports. For theme changes, capture every supported theme.
 7. Check clipping, overflow, hierarchy, spacing, contrast, focus, keyboard access, motion, and
    content accuracy. A passing unit test does not prove these properties.
-8. If implementation is in scope, fix confirmed defects and rerun the entire affected flow. Replace
+8. For motion or scrolling changes, reload at a saved reading position, scroll rapidly, and return
+   through browser history. Watch complete animation cycles, resize, change theme, and test reduced
+   motion. Check that hidden or offscreen effects pause and resume without jumping. A still image
+   cannot establish frame timing or scroll stability.
+9. If implementation is in scope, fix confirmed defects and rerun the entire affected flow. Replace
    stale screenshots with final evidence.
 
 Report the flow and environment, observed states, screenshots or equivalent evidence, runtime

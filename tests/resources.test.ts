@@ -37,7 +37,7 @@ describe('resources', () => {
       'writing-tests',
     ];
 
-    expect(resources).toHaveLength(28);
+    expect(resources).toHaveLength(29);
     for (const id of reportSkillIds) expect(resource(resources, 'skill', id)).toBeDefined();
     expect(resource(resources, 'skill', 'pyramid-communication')).toBeDefined();
     expect(resource(resources, 'command', 'verify')).toBeDefined();

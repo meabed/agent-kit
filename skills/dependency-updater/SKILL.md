@@ -17,7 +17,10 @@ description: Update packages safely and run every required check before the chan
    add compatibility wrappers to preserve an obsolete interface unless the user requires them.
 6. Run focused checks for changed integrations, then the full repository gate. Treat install
    warnings, peer conflicts, duplicate versions, and generated drift as findings rather than noise.
-7. For automation, isolate each repository, use bounded concurrency, stop before commit or push when
+7. When configuring update bots, inspect existing workflows and validate current schemas and manager
+   support. Give multiple bots distinct responsibilities. Make update PRs run the same checks as
+   ordinary changes, and require passing checks before automatic merges. Keep major upgrades reviewable.
+8. For automation, isolate each repository, use bounded concurrency, stop before commit or push when
    verification fails, and never print credentials.
-8. Publish only when explicitly requested. Report versions changed, migration work, exact checks,
+9. Publish only when explicitly requested. Report versions changed, migration work, exact checks,
    unresolved advisories, and remaining release risk.
