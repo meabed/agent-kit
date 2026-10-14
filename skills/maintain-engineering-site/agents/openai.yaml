@@ -1,4 +1,0 @@
-interface:
-  display_name: 'Maintain Engineering Site'
-  short_description: 'Refresh engineering content, design, and reusable skills'
-  default_prompt: 'Use $maintain-engineering-site to refresh my site and instruction kit, mine recent work into an article plan, and verify the changes.'
